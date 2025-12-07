@@ -18,9 +18,13 @@ public:
 
 signals:
     void statusChanged();
+    void connectedToServer();
 
 private:
     QTcpSocket* m_socket;
     QString m_status;
     void setStatus(const QString& msg);
+
+	void sendMessage(const QString& msg);
+	void onReadyRead();
 };

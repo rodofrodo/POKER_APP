@@ -167,4 +167,12 @@ Page {
             horizontalAlignment: Text.AlignHCenter
         }*/
     }
+
+    Connections {
+        target: backend
+
+        function onConnectedToServer() {
+            stackView.push("OptionsPage.qml")
+        }
+    }
 }
