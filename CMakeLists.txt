@@ -26,6 +26,7 @@ qt_add_qml_module(POKER_APP # <-- This target reference is now known
         resources/main.qml
         resources/MainMenu.qml
         resources/ConnectPage.qml
+        resources/LobbyPage.qml
         resources/OptionsPage.qml
         resources/SignUpPage.qml
         resources/images/back_arrow_32.png

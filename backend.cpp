@@ -1,4 +1,5 @@
 #include "backend.h"
+#include "general/globals.h"
 
 Backend::Backend(QObject* parent) : QObject(parent), m_socket(new QTcpSocket(this))
 {
@@ -8,9 +9,6 @@ Backend::Backend(QObject* parent) : QObject(parent), m_socket(new QTcpSocket(thi
     connect(m_socket, &QTcpSocket::connected, this, [this]() {
         setStatus("Connected successfully!");
         emit connectedToServer();
-        // TODO
-        /*sendMessage("name&psisko\n");
-        sendMessage("len\n");*/
         });
 
     connect(m_socket, &QTcpSocket::disconnected, this, [this]() {
@@ -52,6 +50,9 @@ void Backend::connectToServer(const QString& ip, const QString& port)
     if (ok)
     {
         m_socket->connectToHost(ip, portInt);
+        m_ipAddress = ip;
+        m_port = port;
+        emit connectionDetailsChanged();
     }
     else
     {
@@ -81,8 +82,8 @@ void Backend::onReadyRead()
 {
     QByteArray data = m_socket->readAll();
     //qDebug() << "Received raw data:" << data;
-    QString msg = QString::fromUtf8(data), whatToSend;
-    if (msg.startsWith("Length&"))
+    QString msg = QString::fromUtf8(data);
+    if (msg.startsWith("Length"))
     {
         QStringList parts = msg.split("&");
         if (parts.size() == 2)
@@ -91,9 +92,15 @@ void Backend::onReadyRead()
             int length = parts[1].toInt(&ok);
             if (ok)
             {
-				whatToSend = "There are " + QString::number(length) + " players.\n";
+                emit lobbyReady();
             }
         }
 	}
-    setStatus(whatToSend);
+    //setStatus(whatToSend);
+}
+
+void Backend::updateName(const QString& name)
+{
+    m_clientName = name;
+    emit updatedName();
 }

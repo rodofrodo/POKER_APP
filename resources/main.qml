@@ -6,8 +6,8 @@ Window {
     height: 900
     visible: true
     title: "POKER C++ edition"
-    //visibility: Window.FullScreen
-    visibility: Window.Maximized
+    visibility: Window.FullScreen
+    //visibility: Window.Maximized
 
     // StackView manages navigation between pages (push/pop)
     StackView {

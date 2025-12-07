@@ -119,9 +119,19 @@ Page {
 
                     onClicked: {
                         backend.sendMessage_public("name&" + nickInput.text + "\n")
+                        backend.sendMessage_public("len\n")
+                        backend.updateName(nickInput.text)
                     }
                 }
             }
+        }
+    }
+    
+    Connections {
+        target: backend
+
+        function onLobbyReady() {
+            stackView.push("LobbyPage.qml")
         }
     }
 }
