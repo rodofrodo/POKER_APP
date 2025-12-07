@@ -59,6 +59,11 @@ void Backend::connectToServer(const QString& ip, const QString& port)
     }
 }
 
+void Backend::sendMessage_public(const QString& msg)
+{
+    sendMessage(msg);
+}
+
 void Backend::sendMessage(const QString& msg)
 {
     if (m_socket->state() == QAbstractSocket::ConnectedState)

@@ -15,6 +15,7 @@ public:
 
     // Q_INVOKABLE allows QML to call this C++ function
     Q_INVOKABLE void connectToServer(const QString& ip, const QString& port);
+    Q_INVOKABLE void sendMessage_public(const QString& msg);
 
 signals:
     void statusChanged();
