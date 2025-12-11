@@ -43,7 +43,7 @@ Page {
 
         // --- ITEM 2: Side Logo ---
         Image {
-            source: "qrc:/PokerApp/resources/images/side_logo.png" 
+            source: "qrc:/PokerApp/resources/images/side_logo.svg" 
             
             width: 263
             height: 37

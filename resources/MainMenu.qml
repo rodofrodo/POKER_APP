@@ -15,7 +15,7 @@ Page {
         
         Image {
             // UPDATED SOURCE PATH
-            source: "qrc:/PokerApp/resources/images/main_menu_logo.png" 
+            source: "qrc:/PokerApp/resources/images/main_menu_logo.svg" 
     
             width: 356
             height: 177

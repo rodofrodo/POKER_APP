@@ -30,7 +30,7 @@ Page {
 
         // --- ITEM 2: Side Logo ---
         Image {
-            source: "qrc:/PokerApp/resources/images/side_logo.png" 
+            source: "qrc:/PokerApp/resources/images/side_logo.svg" 
             
             width: 263
             height: 37
@@ -48,33 +48,53 @@ Page {
         anchors.top: parent.top
         anchors.right: parent.right
         anchors.topMargin: 42   // Adjust this for more/less top space
-        anchors.rightMargin: 25  // Adjust this for more/less left space
+        anchors.rightMargin: 85  // Adjust this for more/less left space
         
         // 3. Add spacing between the arrow and the logo
-        spacing: 28
+        spacing: 15
 
-        Text {
-            anchors.verticalCenter: parent.verticalCenter
-            text: qsTr(backend.clientName)
-            font.pixelSize: 32
-            horizontalAlignment: Text.AlignHCenter
-            color: "#ffffff"
+        Column {
+            spacing: 3
+
+            Text {
+                anchors.right: parent.right
+                text: qsTr(backend.clientName)
+                font.pixelSize: 16
+                horizontalAlignment: Text.AlignRight
+                color: "#ffffff"
+                font.bold: true
+            }
+
+            Text {
+                anchors.right: parent.right
+                text: "$1000"
+                font.pixelSize: 16
+                horizontalAlignment: Text.AlignRight
+                color: "#ffffff"
+            }
         }
 
         Image {
-            width: 32
-            height: 32
+            source: "qrc:/PokerApp/resources/images/person_44.png" 
+            
+            width: 44
+            height: 44
             fillMode: Image.PreserveAspectFit 
+            
+            // Optional: Align the logo vertically with the arrow
+            anchors.verticalCenter: parent.verticalCenter 
         }
     }
 
     Row {
-        anchors.centerIn: parent
+        anchors.top: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.topMargin: 175
 
         Text {
             anchors.verticalCenter: parent.verticalCenter
             text: qsTr("Connected to lobby — ")
-            font.pixelSize: 32
+            font.pixelSize: 24
             horizontalAlignment: Text.AlignHCenter
             color: "#ffffff"
         }
@@ -82,7 +102,7 @@ Page {
         Text {
             anchors.verticalCenter: parent.verticalCenter
             text: qsTr(backend.ipAddress + ":" + backend.port)
-            font.pixelSize: 32
+            font.pixelSize: 24
             horizontalAlignment: Text.AlignHCenter
             color: "#ffffff"
             font.bold: true
