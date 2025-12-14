@@ -2,12 +2,24 @@ import QtQuick
 import QtQuick.Controls
 
 Window {
+    id: root
     width: 1600
     height: 900
-    visible: true
     title: "POKER C++ edition"
-    visibility: Window.FullScreen
+    visible: true
+    //visibility: Window.FullScreen
     //visibility: Window.Maximized
+
+    // --- F11 FULLSCREEN TOGGLE ---
+    Shortcut {
+        sequence: "F11"
+        onActivated: {
+            if (root.visibility === Window.FullScreen)
+                root.visibility = Window.Windowed
+            else
+                root.visibility = Window.FullScreen
+        }
+    }
 
     // StackView manages navigation between pages (push/pop)
     StackView {

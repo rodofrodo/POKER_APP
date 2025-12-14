@@ -23,7 +23,9 @@ Page {
 
         // --- ITEM 1: Back Arrow ---
         Image {
-            source: "qrc:/PokerApp/resources/images/back_arrow_32.png" 
+            source: backMouseArea.containsMouse
+                ? "qrc:/PokerApp/resources/images/back_arrow_hover_32.png" 
+                : "qrc:/PokerApp/resources/images/back_arrow_32.png" 
             
             width: 32
             height: 32
@@ -32,6 +34,7 @@ Page {
             // REMOVED: anchors.horizontalCenter (Row handles position now)
 
             MouseArea {
+                id: backMouseArea
                 anchors.fill: parent
                 hoverEnabled: true 
                 cursorShape: Qt.PointingHandCursor

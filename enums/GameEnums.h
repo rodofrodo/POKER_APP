@@ -1,0 +1,32 @@
+#pragma once
+
+enum class GameState
+{
+	WAITING_FOR_PLAYERS,
+	DEALING_CARDS,
+	BETTING_ROUND,
+	SHOWDOWN,
+	GAME_OVER
+};
+
+enum class BettingRound
+{
+	PRE_FLOP,
+	FLOP,
+	TURN,
+	RIVER
+};
+
+enum class BettingState
+{
+	SMALL_BLIND, BIG_BLIND, NORMAL
+};
+
+enum class Suit { HEARTS, DIAMONDS, CLUBS, SPADES };
+enum class Rank { TWO = 2, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE };
+
+enum class PokerHand
+{
+	HIGH_CARD = 1, ONE_PAIR, TWO_PAIR, THREE_OF_A_KIND, STRAIGHT, FLUSH, FULL_HOUSE, FOUR_OF_A_KIND,
+	STRAIGHT_FLUSH, ROYAL_FLUSH
+};
