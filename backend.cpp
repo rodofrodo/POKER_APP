@@ -22,11 +22,6 @@ const QString SIDE_POTS_MSG_PREFIX = "SidePots";
 const QString NEW_BET_MSG_PREFIX = "NewBet";
 const QString BANKRUPTS_MSG_PREFIX = "Bankrupts";
 
-bool gotPlayers = false;
-bool gotGameInfo = false;
-bool gotCommunityCards = false;
-bool gotPlayerCards = false;
-
 Backend::Backend(QObject* parent) : QObject(parent), m_socket(new QTcpSocket(this))
 {
     m_status = "Ready to connect.";
@@ -157,6 +152,7 @@ void Backend::processBuffer(const QString& msg)
         QString playerList = msg.split("&")[1];
         QStringList playerProps = playerList.split("#");
         playerMap.clear();
+        playerNames.clear();
         size_t index = 0;
         for (const QString& prop : playerProps)
         {
@@ -370,14 +366,14 @@ void Backend::processBuffer(const QString& msg)
             minimalRaiseAmount = 500; // reset minimal raise amount
             // checking if ended by folding
             int inGame = 0, hasNotGoneAllIn = 0;
-            for (const auto& [k, v] : playerMap)
+            for (const auto& v : playerNames)
             {
-                if (!v.hasFolded)
+                if (!playerMap[v].hasFolded)
                     inGame++;
-                if (!v.hasFolded && !v.currentBet.isAllIn)
+                if (!playerMap[v].hasFolded && !playerMap[v].currentBet.isAllIn)
                     hasNotGoneAllIn++;
             }
-            if (inGame == 1)
+            if (inGame < 2)
             {
                 currentGameState = GameState::GAME_OVER;
                 sendMessage(QString::fromStdString("get_winner&game_over&" + std::to_string(pot)));
@@ -442,7 +438,13 @@ void Backend::processBuffer(const QString& msg)
         }
     }
     if (gotPlayers)
-        emit updatedGamePage();
+        _update();
+}
+
+void Backend::_update()
+{
+
+    emit updatedGamePage();
 }
 
 void Backend::updateName(const QString& name)
@@ -503,5 +505,34 @@ void Backend::_match_bet()
     }
 }
 
-void Backend::_change_bet() {}
-void Backend::_fold() {}
+void Backend::_change_bet_open()
+{
+    if (m_clientName == playerNames[currentPlayer])
+    {
+        TUPLE::MinMax res = prompt::getDifferentBetOptions(topbet, playerMap[playerNames[currentPlayer]]);
+        m_raiseVal = res.min;
+        emit raiseValueChanged();
+    }
+}
+
+void Backend::_change_bet_confirm()
+{
+    if (m_clientName == playerNames[currentPlayer])
+    {
+        TUPLE::MinMax res = prompt::getDifferentBetOptions(topbet, playerMap[playerNames[currentPlayer]]);
+        if (m_raiseVal >= res.max)
+        {
+            sendMessage(QString::fromStdString(std::format("action&{}={}={}",
+                m_clientName.toStdString(), 4, playerMap[playerNames[currentPlayer]].balance)));
+        }
+        sendMessage(QString::fromStdString(std::format("action&{}={}={}",
+            m_clientName.toStdString(), 2, m_raiseVal)));
+    }
+}
+
+void Backend::_fold()
+{
+    if (m_clientName == playerNames[currentPlayer])
+        sendMessage(QString::fromStdString(std::format("action&{}={}={}",
+            m_clientName.toStdString(), 3, -123456)));
+}

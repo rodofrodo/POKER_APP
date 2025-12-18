@@ -42,6 +42,7 @@ qt_add_qml_module(POKER_APP # <-- This target reference is now known
         resources/images/back_arrow_32.png
         resources/images/back_arrow_hover_32.png
         resources/images/black_person_32.png
+        resources/images/bind.svg
         resources/images/board_classic.svg
         resources/images/gray_rect.png
         resources/images/main_menu_logo.svg
@@ -49,7 +50,10 @@ qt_add_qml_module(POKER_APP # <-- This target reference is now known
         resources/images/side_logo.svg
         resources/images/small_gray_rect.png
         resources/images/small_white_rect.png
+        resources/images/white_polygon_up_16.svg
+        resources/images/white_polygon_down_16.svg
         resources/images/white_rect.png
+        resources/images/white_small_button_rect.svg
         # Cards
         resources/images/cards/back.png
         # -- TWO --
