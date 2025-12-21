@@ -160,15 +160,16 @@ Page {
                 }
             }
         }
-        /*
+        
         Label {
             // Bind to the C++ property
             text: backend.statusMessage 
-            color: "blue"
+            color: "white"
             width: parent.width
             wrapMode: Text.WordWrap
             horizontalAlignment: Text.AlignHCenter
-        }*/
+            font.pixelSize: 20
+        }
     }
 
     Connections {

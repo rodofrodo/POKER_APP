@@ -14,6 +14,10 @@ project(POKER_APP LANGUAGES CXX) # Target name POKER_APP is defined here
 # Find Qt6 Packages
 find_package(Qt6 REQUIRED COMPONENTS Quick Network)
 
+if(MSVC)
+    add_compile_options(/utf-8)
+endif()
+
 # 1. Define the executable target FIRST.
 qt_add_executable(POKER_APP 
     main.cpp
@@ -23,6 +27,8 @@ qt_add_executable(POKER_APP
     general/globals.cpp
     classes/GameCard.h
     classes/GameCard.cpp
+    # --- ADD THIS LINE ---
+    resources.rc
 )
 
 # 2. Then, reference the target when creating the QML module.
@@ -34,6 +40,7 @@ qt_add_qml_module(POKER_APP # <-- This target reference is now known
         resources/main.qml
         resources/MainMenu.qml
         resources/ConnectPage.qml
+        resources/Credits.qml
         resources/GamePage.qml
         resources/LobbyPage.qml
         resources/OptionsPage.qml
@@ -54,7 +61,82 @@ qt_add_qml_module(POKER_APP # <-- This target reference is now known
         resources/images/white_polygon_down_16.svg
         resources/images/white_rect.png
         resources/images/white_small_button_rect.svg
-        # Cards
+        # Player action images
+        resources/images/players/acts_rect.svg
+        resources/images/players/all_in_rect.svg
+        resources/images/players/bb_rect.svg
+        resources/images/players/dealer_rect.svg
+        resources/images/players/default_rect.svg
+        resources/images/players/sb_rect.svg
+        resources/images/players/winner_rect.svg
+        # Cards small
+        resources/images/cards/small/back.png
+        # -- TWO --
+        resources/images/cards/small/CLUBS_2.svg
+        resources/images/cards/small/DIAMONDS_2.svg
+        resources/images/cards/small/HEARTS_2.svg
+        resources/images/cards/small/SPADES_2.svg
+        # -- THREE --
+        resources/images/cards/small/CLUBS_3.svg
+        resources/images/cards/small/DIAMONDS_3.svg
+        resources/images/cards/small/HEARTS_3.svg
+        resources/images/cards/small/SPADES_3.svg
+        # -- FOUR --
+        resources/images/cards/small/CLUBS_4.svg
+        resources/images/cards/small/DIAMONDS_4.svg
+        resources/images/cards/small/HEARTS_4.svg
+        resources/images/cards/small/SPADES_4.svg
+        # -- FIVE --
+        resources/images/cards/small/CLUBS_5.svg
+        resources/images/cards/small/DIAMONDS_5.svg
+        resources/images/cards/small/HEARTS_5.svg
+        resources/images/cards/small/SPADES_5.svg
+        # -- SIX --
+        resources/images/cards/small/CLUBS_6.svg
+        resources/images/cards/small/DIAMONDS_6.svg
+        resources/images/cards/small/HEARTS_6.svg
+        resources/images/cards/small/SPADES_6.svg
+        # -- SEVEN --
+        resources/images/cards/small/CLUBS_7.svg
+        resources/images/cards/small/DIAMONDS_7.svg
+        resources/images/cards/small/HEARTS_7.svg
+        resources/images/cards/small/SPADES_7.svg
+        # -- EIGHT --
+        resources/images/cards/small/CLUBS_8.svg
+        resources/images/cards/small/DIAMONDS_8.svg
+        resources/images/cards/small/HEARTS_8.svg
+        resources/images/cards/small/SPADES_8.svg
+        # -- NINE --
+        resources/images/cards/small/CLUBS_9.svg
+        resources/images/cards/small/DIAMONDS_9.svg
+        resources/images/cards/small/HEARTS_9.svg
+        resources/images/cards/small/SPADES_9.svg
+        # -- TEN --
+        resources/images/cards/small/CLUBS_10.svg
+        resources/images/cards/small/DIAMONDS_10.svg
+        resources/images/cards/small/HEARTS_10.svg
+        resources/images/cards/small/SPADES_10.svg
+        # -- JACK --
+        resources/images/cards/small/CLUBS_J.svg
+        resources/images/cards/small/DIAMONDS_J.svg
+        resources/images/cards/small/HEARTS_J.svg
+        resources/images/cards/small/SPADES_J.svg
+        # -- QUEEN --
+        resources/images/cards/small/CLUBS_Q.svg
+        resources/images/cards/small/DIAMONDS_Q.svg
+        resources/images/cards/small/HEARTS_Q.svg
+        resources/images/cards/small/SPADES_Q.svg
+        # -- KING --
+        resources/images/cards/small/CLUBS_K.svg
+        resources/images/cards/small/DIAMONDS_K.svg
+        resources/images/cards/small/HEARTS_K.svg
+        resources/images/cards/small/SPADES_K.svg
+        # -- ACE --
+        resources/images/cards/small/CLUBS_A.svg
+        resources/images/cards/small/DIAMONDS_A.svg
+        resources/images/cards/small/HEARTS_A.svg
+        resources/images/cards/small/SPADES_A.svg
+        # Cards big
         resources/images/cards/back.png
         # -- TWO --
         resources/images/cards/CLUBS_2.svg

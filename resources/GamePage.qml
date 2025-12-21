@@ -51,13 +51,89 @@ Page {
 
     Column {
         id: playerColumn
-        spacing: 5
+        spacing: 15
         anchors.top: parent.top
         anchors.left: parent.left
+        anchors.margins: 10
 
         Repeater {
             model: backend.lobbySize
             
+            Image {
+                source: (backend.uiTrigger, backend.getBackground(index))
+                opacity: (backend.uiTrigger, backend.getOpacity(index))
+                width: 280
+                height: 73
+                fillMode: Image.PreserveAspectFit
+
+                Column {
+                    //spacing: 3
+                    anchors.left: parent.left
+                    anchors.leftMargin: 25 
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    Row {
+                        spacing: 8
+
+                        Text {
+                            text: (backend.uiTrigger, backend.getPlayerName(index))
+                            font.pixelSize: 20
+                            horizontalAlignment: Text.AlignLeft
+                            color: (backend.uiTrigger, backend.getTextColor(index))
+                            font.bold: true
+                        }
+
+                        Text {
+                            text: (backend.uiTrigger, backend.getLoans(index))
+                            font.pixelSize: 20
+                            horizontalAlignment: Text.AlignLeft
+                            color: "#0077FF"
+                            font.bold: true
+                        }
+                    }
+
+                    Text {
+                        text: (backend.uiTrigger, backend.getBalance(index))
+                        font.pixelSize: 16
+                        horizontalAlignment: Text.AlignHCenter
+                        color: (backend.uiTrigger, backend.getTextColor(index))
+                    }
+                }
+
+                Row {
+                    anchors.right: parent.right
+                    anchors.rightMargin: 25
+                    anchors.verticalCenter: parent.verticalCenter
+                    spacing: 8
+
+                    Text {
+                        id: betValText
+                        text: (backend.uiTrigger, backend.getCurrentBet(index))
+                        font.pixelSize: 24
+                        horizontalAlignment: Text.AlignHCenter
+                        visible: text !== "None" && backend.bettingRound !== "SHOWDOWN"
+                        color: (backend.uiTrigger, backend.getPriceTextColor(index))
+                        font.bold: true
+                    }
+
+                    Image {
+                        visible: backend.bettingRound === "SHOWDOWN" && (backend.uiTrigger, backend.getLeftCard(index)) !== "back.png"
+                        source: "qrc:/PokerApp/resources/images/cards/small/" + (backend.uiTrigger, backend.getLeftCard(index))
+                        width: 28
+                        height: 46
+                        fillMode: Image.PreserveAspectFit 
+                    }
+
+                    Image {
+                        visible: backend.bettingRound === "SHOWDOWN" && (backend.uiTrigger, backend.getRightCard(index)) !== "back.png"
+                        source: "qrc:/PokerApp/resources/images/cards/small/" + (backend.uiTrigger, backend.getRightCard(index))
+                        width: 28
+                        height: 46
+                        fillMode: Image.PreserveAspectFit 
+                    }
+                }
+            }
+            /*
             Row {
                 spacing: 5
 
@@ -90,15 +166,8 @@ Page {
                     font.pixelSize: 18
                     text: (backend.uiTrigger, backend.getActingPlayer(index))
                 }
-            }
+            }*/
         }
-    }
-
-    Text {
-        font.pixelSize: 18
-        text: backend.winners
-        anchors.top: playerColumn.bottom
-        anchors.left: parent.left
     }
 
     Column {
@@ -235,6 +304,21 @@ Page {
         font.italic: true
         horizontalAlignment: Text.AlignHCenter
         color: "#00E3FF"
+    }
+
+    Text {
+        id: yourTurnText
+
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 320
+
+        visible: backend.isActingPlayer
+        text: "Your turn!"
+        font.pixelSize: 24
+        font.bold: true
+        horizontalAlignment: Text.AlignHCenter
+        color: "#FF007B"
     }
 
     Row {
@@ -412,6 +496,7 @@ Page {
                 source: "qrc:/PokerApp/resources/images/white_polygon_up_16.svg"
                 width: 16; height: 16
                 anchors.horizontalCenter: parent.horizontalCenter
+                opacity: backend.raiseUpOpacity
 
                 MouseArea {
                     anchors.fill: parent
@@ -421,7 +506,8 @@ Page {
             }
 
             Text {
-                text: backend.raiseVal; font.bold: true
+                text: backend.raiseUpText
+                font.bold: true
                 anchors.horizontalCenter: parent.horizontalCenter 
                 font.pixelSize: 32
                 color: "#ffffff"
@@ -431,6 +517,7 @@ Page {
                 source: "qrc:/PokerApp/resources/images/white_polygon_down_16.svg"
                 width: 16; height: 16
                 anchors.horizontalCenter: parent.horizontalCenter
+                opacity: backend.raiseDownOpacity
 
                 MouseArea {
                     anchors.fill: parent

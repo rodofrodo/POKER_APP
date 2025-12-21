@@ -24,7 +24,15 @@ const QString BANKRUPTS_MSG_PREFIX = "Bankrupts";
 
 Backend::Backend(QObject* parent) : QObject(parent), m_socket(new QTcpSocket(this))
 {
-    m_status = "Ready to connect.";
+    m_status = "";
+	hasConnected = false;
+    m_uiTrigger = 0;
+    m_raiseVal = 500;
+
+    gotPlayers = false;
+    gotGameInfo = false;
+    gotCommunityCards = false;
+    gotPlayerCards = false;
 
     // Listen for socket state changes
     connect(m_socket, &QTcpSocket::connected, this, [this]() {
@@ -38,52 +46,169 @@ Backend::Backend(QObject* parent) : QObject(parent), m_socket(new QTcpSocket(thi
 
 	connect(m_socket, &QTcpSocket::readyRead, this, &Backend::onReadyRead);
 
-    connect(m_socket, &QTcpSocket::errorOccurred, this, [this](QAbstractSocket::SocketError) {
-        setStatus("Error: " + m_socket->errorString());
+    connect(m_socket, &QTcpSocket::errorOccurred, this, [this](QAbstractSocket::SocketError socketError) {
+        QString errorMsg;
+        switch (socketError)
+        {
+        case QAbstractSocket::ConnectionRefusedError:
+            errorMsg = "Connection Refused";
+            break;
+        case QAbstractSocket::RemoteHostClosedError:
+            errorMsg = "Remote Host Closed";
+            break;
+        case QAbstractSocket::HostNotFoundError:
+            errorMsg = "Host Not Found";
+            break;
+        case QAbstractSocket::SocketTimeoutError:
+            errorMsg = "Connection Timed Out";
+            break;
+        case QAbstractSocket::NetworkError:
+            errorMsg = "Network Error";
+            break;
+        default:
+            // Fallback for rare errors: try the system string, or just say "Unknown"
+            errorMsg = "Unknown Socket Error (" + QString::number(socketError) + ")";
+            break;
+        }
+        setStatus("Error: " + errorMsg);
         });
 }
 
-QString Backend::statusMessage() const
+QString Backend::statusMessage() const { return m_status; }
+QString Backend::getIpAddress() const { return m_ipAddress; }
+QString Backend::getPort() const { return m_port; }
+QString Backend::getName() const { return m_clientName; }
+QString Backend::getLobbySize() const { return QString::number(playerInLobby); }
+QStringList Backend::getPlayerList() const { return m_playerList; }
+
+int Backend::getClientIndex() const { return clientIndex; }
+
+QString Backend::getLeftCard() const
 {
-    return m_status;
+    return QString::fromStdString(
+        playerMap[m_clientName].leftCard.toString());
+}
+
+QString Backend::getRightCard() const
+{
+    return QString::fromStdString(
+        playerMap[m_clientName].rightCard.toString());
+}
+
+bool Backend::getIsActingPlayer() const
+{
+    if (gotPlayers && currentGameState == GameState::BETTING_ROUND)
+        return m_clientName == playerNames[currentPlayer];
+    return false;
+}
+
+QString Backend::getBettingRound() const
+{
+    QString round;
+    if (currentGameState == GameState::DEALING_CARDS)
+        round = "DEALING CARDS";
+    else if (currentGameState == GameState::BETTING_ROUND)
+        round = QString::fromStdString(utils::getBettingRound(currentBettingRound));
+    else if (currentGameState == GameState::SHOWDOWN)
+        round = "SHOWDOWN";
+    else if (currentGameState == GameState::GAME_OVER)
+        round = "GAME OVER";
+    return round;
+}
+
+QString Backend::getPotValue() const { return "$" + QString::number(pot / 100.0, 'f', 2); }
+
+QStringList Backend::getCommunityCards() const
+{
+    QStringList r;
+    for (const auto& x : communityCards)
+        r.append(QString::fromStdString(x.toString()));
+    return r;
+}
+
+QStringList Backend::getBetOpts() const
+{
+    QStringList qsl;
+    if (gotPlayers && currentGameState == GameState::BETTING_ROUND)
+        if (m_clientName == playerNames[currentPlayer])
+            return prompt::getAvailableOptions(topbet, playerMap[m_clientName]);
+    for (int i = 0; i < 3; i++) qsl.append("-");
+    return qsl;
+}
+
+QString Backend::getTopbetValue() const
+{
+    if (topbet.value == VAL::CLEAR || topbet.value == VAL::EMPTY)
+        return "NONE";
+    return "$" + QString::number(topbet.value / 100.0, 'f', 2);
+}
+
+QString Backend::getWinners() const
+{
+    QString qsl;
+    if (currentGameState == GameState::GAME_OVER)
+        qsl.append("The winner is " + globalDefaultWinner);
+    else if (currentGameState == GameState::SHOWDOWN)
+    {
+        if (globalWinningCards.size() > 1 && globalWinningType == "normal")
+        {
+            qsl.append("\n--- IT'S A TIE! ---\n");
+            qsl.append(globalWinningCards.size() + " players have the same winning hand!\n\n");
+        }
+        else if (globalWinningType == "sidepot")
+        {
+            qsl.append("\n--- DISTRIBUTION OF SIDEPOTS ---\n");
+            qsl.append(globalWinningCards.size() + " sidepots are distributed.\n\n");
+        }
+        for (size_t i = 0; i < globalWinningCards.size(); i++)
+            qsl.append(globalWinningMsg[i] + "\n");
+    }
+    else qsl.append("");
+    return qsl;
+}
+
+int Backend::getUiTrigger() const { return m_uiTrigger; }
+
+QString Backend::getRaiseVal() const
+{
+    return "$" + QString::number(m_raiseVal / 100.0, 'f', 2);
+}
+
+double Backend::getRaiseUpOpacity() const
+{
+    if (playerMap.size() == 0) return 1.0;
+    TUPLE::MinMax res = prompt::getDifferentBetOptions(topbet, playerMap[m_clientName]);
+    if (m_raiseVal < res.max)
+        return 1.0;
+    return .5;
+}
+
+double Backend::getRaiseDownOpacity() const
+{
+    if (playerMap.size() == 0) return 1.0;
+    TUPLE::MinMax res = prompt::getDifferentBetOptions(topbet, playerMap[m_clientName]);
+    if (m_raiseVal > res.min)
+        return 1.0;
+    return .5;
+}
+
+QString Backend::getRaiseUpText() const
+{
+    if (playerMap.size() == 0) return "";
+    double balance = playerMap[m_clientName].balance;
+    TUPLE::MinMax res = prompt::getDifferentBetOptions(topbet, playerMap[m_clientName]);
+    if (m_raiseVal >= res.max)
+		return "All-in";
+    return "$" + QString::number(m_raiseVal / 100.0, 'f', 2);
 }
 
 void Backend::setStatus(const QString& msg)
 {
-    if (m_status != msg) {
+    if (m_status != msg)
+    {
         m_status = msg;
         emit statusChanged();
     }
-}
-
-void Backend::connectToServer(const QString& ip, const QString& port)
-{
-    if (m_socket->state() == QAbstractSocket::ConnectedState)
-    {
-        m_socket->disconnectFromHost();
-    }
-
-    setStatus("Connecting...");
-    // Convert string port to integer
-    bool ok;
-    int portInt = port.toInt(&ok);
-
-    if (ok)
-    {
-        m_socket->connectToHost(ip, portInt);
-        m_ipAddress = ip;
-        m_port = port;
-        emit connectionDetailsChanged();
-    }
-    else
-    {
-        setStatus("Invalid Port Number");
-    }
-}
-
-void Backend::sendMessage_public(const QString& msg)
-{
-    sendMessage(msg);
 }
 
 void Backend::sendMessage(const QString& msg)
@@ -168,6 +293,8 @@ void Backend::processBuffer(const QString& msg)
             p.rightCard = GameCard(Suit::CLUBS, Rank::TWO);
             p.currentBet = { VAL::CLEAR, false };
             p.hasFolded = false;
+			p.hasWon = false;
+			p.winningHandString = "";
             playerMap[p.name] = p;
             playerNames.push_back(p.name);
             if (clientName == p.name)
@@ -287,6 +414,8 @@ void Backend::processBuffer(const QString& msg)
                 GameCard card = utils::parseCard(cardStr.toStdString());
                 winningCards.push_back(card);
             }
+			playerMap[winnerName].hasWon = true;
+			playerMap[winnerName].winningHandString = QString::fromStdString(utils::getHandName(winningHand)).toUpper();
             std::string message = std::format("The winner is: {}\nWon with: {}",
                 winnerName.toStdString(), utils::getHandName(winningHand));
             globalWinningCards.push_back(winningCards);
@@ -299,6 +428,9 @@ void Backend::processBuffer(const QString& msg)
         auto parts = msg.split("&");
         if (parts.size() < 2) return;
         globalDefaultWinner = parts[1];
+        playerMap[globalDefaultWinner].hasWon = true;
+        playerMap[globalDefaultWinner].winningHandString =
+            "$" + QString::number(playerMap[globalDefaultWinner].balance / 100.0, 'f', 2);
     }
     else if (msg.startsWith(SIDE_POTS_MSG_PREFIX))
     {
@@ -443,14 +575,7 @@ void Backend::processBuffer(const QString& msg)
 
 void Backend::_update()
 {
-
     emit updatedGamePage();
-}
-
-void Backend::updateName(const QString& name)
-{
-    m_clientName = name;
-    emit updatedName();
 }
 
 void Backend::nextPlayer()
@@ -480,6 +605,42 @@ void Backend::nextPlayer()
     if (playerMap[playerNames[currentPlayer]].hasFolded ||
         playerMap[playerNames[currentPlayer]].currentBet.isAllIn)
         nextPlayer();*/
+}
+
+void Backend::connectToServer(const QString& ip, const QString& port)
+{
+    if (m_socket->state() == QAbstractSocket::ConnectedState)
+    {
+        m_socket->disconnectFromHost();
+    }
+
+    setStatus("Connecting...");
+    // Convert string port to integer
+    bool ok;
+    int portInt = port.toInt(&ok);
+
+    if (ok)
+    {
+        m_socket->connectToHost(ip, portInt);
+        m_ipAddress = ip;
+        m_port = port;
+        emit connectionDetailsChanged();
+    }
+    else
+    {
+        setStatus("Invalid Port Number");
+    }
+}
+
+void Backend::sendMessage_public(const QString& msg)
+{
+    sendMessage(msg);
+}
+
+void Backend::updateName(const QString& name)
+{
+    m_clientName = name;
+    emit updatedName();
 }
 
 void Backend::_match_bet()
@@ -535,4 +696,157 @@ void Backend::_fold()
     if (m_clientName == playerNames[currentPlayer])
         sendMessage(QString::fromStdString(std::format("action&{}={}={}",
             m_clientName.toStdString(), 3, -123456)));
+}
+
+void Backend::increaseBet()
+{
+    if (m_clientName == playerNames[currentPlayer])
+    {
+        TUPLE::MinMax res = prompt::getDifferentBetOptions(topbet, playerMap[playerNames[currentPlayer]]);
+        if (m_raiseVal < res.max)
+        {
+            m_raiseVal += 500;
+            emit raiseValueChanged();
+        }
+    }
+}
+
+void Backend::decreaseBet()
+{
+    if (m_clientName == playerNames[currentPlayer])
+    {
+        TUPLE::MinMax res = prompt::getDifferentBetOptions(topbet, playerMap[playerNames[currentPlayer]]);
+        if (m_raiseVal > res.min)
+        {
+            m_raiseVal -= 500;
+            emit raiseValueChanged();
+        }
+    }
+}
+
+QString Backend::getPlayerName(int index) { return m_playerList[index]; }
+
+QString Backend::getBettingState(int index)
+{
+    if (playerMap.size() == 0) return "";
+    if (playerMap[playerNames[index]].isDealer) return "DEALER";
+    if (playerMap[playerNames[index]].bettingState == BettingState::SMALL_BLIND)
+        return "SMALL BLIND";
+    if (playerMap[playerNames[index]].bettingState == BettingState::BIG_BLIND)
+        return "BIG BLIND";
+    return "NORMAL";
+}
+
+QString Backend::getBalance(int index)
+{
+    if (playerMap.size() == 0) return "";
+    if (playerMap[playerNames[index]].hasWon)
+		return playerMap[playerNames[index]].winningHandString;
+    double balance = playerMap[playerNames[index]].balance / 100.0;
+    return "$" + QString::number(balance, 'f', 2);
+}
+
+QString Backend::getLoans(int index)
+{
+    if (playerMap.size() == 0) return "";
+    if (playerMap[playerNames[index]].loans == 0)
+		return "";
+    return QString::fromStdString(utils::getRomanNumeral(playerMap[playerNames[index]].loans));
+}
+
+QString Backend::getCurrentBet(int index)
+{
+    if (playerMap.size() == 0) return "";
+    if (playerMap[playerNames[index]].hasFolded)
+        return "FOLDED";
+    if (playerMap[playerNames[index]].currentBet.value == VAL::CLEAR)
+        return "None";
+
+    double betValue = playerMap[playerNames[index]].currentBet.value / 100.0;
+    return "$" + QString::number(betValue, 'f', 2);
+}
+
+QString Backend::getActingPlayer(int index)
+{
+    if (playerMap.size() == 0) return "";
+    if (playerMap[playerNames[currentPlayer]].name == playerMap[playerNames[index]].name
+        && currentGameState == GameState::BETTING_ROUND)
+        return "<<<";
+    return "";
+}
+
+QString Backend::getBackground(int index)
+{
+    if (playerMap.size() == 0) return "qrc:/PokerApp/resources/images/players/default_rect.svg";
+    const Player* p = &playerMap[playerNames[index]];
+    QString source = "#";
+
+    if (p->bettingState == BettingState::SMALL_BLIND)
+        source = "qrc:/PokerApp/resources/images/players/sb_rect.svg";
+    else if (p->bettingState == BettingState::BIG_BLIND)
+        source = "qrc:/PokerApp/resources/images/players/bb_rect.svg";
+    else if (p->isDealer)
+        source = "qrc:/PokerApp/resources/images/players/dealer_rect.svg";
+
+    if (p->currentBet.isAllIn)
+        source = "qrc:/PokerApp/resources/images/players/all_in_rect.svg";
+    if (p->hasWon)
+		source = "qrc:/PokerApp/resources/images/players/winner_rect.svg";
+    if (index == currentPlayer
+        && currentGameState == GameState::BETTING_ROUND)
+        source = "qrc:/PokerApp/resources/images/players/acts_rect.svg";
+
+    return source == "#" ? "qrc:/PokerApp/resources/images/players/default_rect.svg" : source;
+}
+
+QString Backend::getTextColor(int index)
+{
+    if (playerMap.size() == 0) return "#ffffff";
+    const Player* p = &playerMap[playerNames[index]];
+    if (p->hasFolded)
+        return "#505050";
+    if (p->hasWon)
+		return "#ffffff";
+    if (p->currentBet.isAllIn)
+        return "#00ff88";
+    if (index == currentPlayer
+        && currentGameState == GameState::BETTING_ROUND)
+        return "#000000";
+    return "#ffffff";
+}
+
+QString Backend::getPriceTextColor(int index)
+{
+    if (playerMap.size() == 0) return "#ffffff";
+    const Player* p = &playerMap[playerNames[index]];
+    if (index == currentPlayer
+        && currentGameState == GameState::BETTING_ROUND)
+        return "#000000";
+    return "#ffffff";
+}
+
+QString Backend::getLeftCard(int index)
+{
+    if (playerMap.size() == 0) return "back.png";
+    if (playerMap[playerNames[index]].hasFolded)
+        return "back.png";
+    return QString::fromStdString(
+        playerMap[playerNames[index]].leftCard.toString()) + ".svg";
+}
+
+QString Backend::getRightCard(int index)
+{
+    if (playerMap.size() == 0) return "back.png";
+    if (playerMap[playerNames[index]].hasFolded)
+        return "back.png";
+    return QString::fromStdString(
+        playerMap[playerNames[index]].rightCard.toString()) + ".svg";
+}
+
+double Backend::getOpacity(int index)
+{
+    if (playerMap.size() == 0) return 1.0;
+    if (playerMap[playerNames[index]].hasFolded)
+        return .5;
+    return 1.0;
 }

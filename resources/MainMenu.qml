@@ -13,14 +13,43 @@ Page {
         anchors.centerIn: parent
         spacing: 200
         
-        Image {
-            // UPDATED SOURCE PATH
-            source: "qrc:/PokerApp/resources/images/main_menu_logo.svg" 
+        Column {
+            anchors.horizontalCenter: parent.horizontalCenter 
+            spacing: 24
+
+            Image {
+                // UPDATED SOURCE PATH
+                source: "qrc:/PokerApp/resources/images/main_menu_logo.svg" 
     
-            width: 356
-            height: 177
-            fillMode: Image.PreserveAspectFit 
-            anchors.horizontalCenter: parent.horizontalCenter
+                width: 356
+                height: 177
+                fillMode: Image.PreserveAspectFit 
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+
+            Text {
+                text: "Version 1.0 — 2026"
+                color: "white"
+                font.pixelSize: 14
+                opacity: 0.5
+                font.bold: credits_ma.containsMouse
+                anchors.horizontalCenter: parent.horizontalCenter
+        
+                MouseArea {
+                    id: credits_ma
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    hoverEnabled: true
+            
+                    // Nice hover effect
+                    onEntered: parent.opacity = 1.0
+                    onExited: parent.opacity = 0.5
+
+                    onClicked: {
+                        stackView.push("Credits.qml")
+                    }
+                }
+            }
         }
 
         Column {
