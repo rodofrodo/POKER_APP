@@ -1,19 +1,20 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-
 #include "backend.h"
+#include "SettingsManager.h"
 
 int main(int argc, char* argv[])
 {
     QGuiApplication app(argc, argv);
 
+    SettingsManager settings;
+
     QQmlApplicationEngine engine;
 
-    // Create our backend object
-    Backend backend;
+    engine.rootContext()->setContextProperty("AppSettings", &settings);
 
-    // Expose it to QML as a context property named "backend"
+    Backend backend;
     engine.rootContext()->setContextProperty("backend", &backend);
 
     const QUrl url(u"qrc:/PokerApp/resources/main.qml"_qs);

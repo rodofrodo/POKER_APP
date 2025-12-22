@@ -27,6 +27,8 @@ qt_add_executable(POKER_APP
     general/globals.cpp
     classes/GameCard.h
     classes/GameCard.cpp
+    SettingsManager.h
+    SettingsManager.cpp
     # --- ADD THIS LINE ---
     resources.rc
 )
@@ -136,73 +138,152 @@ qt_add_qml_module(POKER_APP # <-- This target reference is now known
         resources/images/cards/small/DIAMONDS_A.svg
         resources/images/cards/small/HEARTS_A.svg
         resources/images/cards/small/SPADES_A.svg
-        # Cards big
+        # Cards big default
         resources/images/cards/back.png
         # -- TWO --
-        resources/images/cards/CLUBS_2.svg
-        resources/images/cards/DIAMONDS_2.svg
-        resources/images/cards/HEARTS_2.svg
-        resources/images/cards/SPADES_2.svg
+        resources/images/cards/default/CLUBS_2.svg
+        resources/images/cards/default/DIAMONDS_2.svg
+        resources/images/cards/default/HEARTS_2.svg
+        resources/images/cards/default/SPADES_2.svg
         # -- THREE --
-        resources/images/cards/CLUBS_3.svg
-        resources/images/cards/DIAMONDS_3.svg
-        resources/images/cards/HEARTS_3.svg
-        resources/images/cards/SPADES_3.svg
+        resources/images/cards/default/CLUBS_3.svg
+        resources/images/cards/default/DIAMONDS_3.svg
+        resources/images/cards/default/HEARTS_3.svg
+        resources/images/cards/default/SPADES_3.svg
         # -- FOUR --
-        resources/images/cards/CLUBS_4.svg
-        resources/images/cards/DIAMONDS_4.svg
-        resources/images/cards/HEARTS_4.svg
-        resources/images/cards/SPADES_4.svg
+        resources/images/cards/default/CLUBS_4.svg
+        resources/images/cards/default/DIAMONDS_4.svg
+        resources/images/cards/default/HEARTS_4.svg
+        resources/images/cards/default/SPADES_4.svg
         # -- FIVE --
-        resources/images/cards/CLUBS_5.svg
-        resources/images/cards/DIAMONDS_5.svg
-        resources/images/cards/HEARTS_5.svg
-        resources/images/cards/SPADES_5.svg
+        resources/images/cards/default/CLUBS_5.svg
+        resources/images/cards/default/DIAMONDS_5.svg
+        resources/images/cards/default/HEARTS_5.svg
+        resources/images/cards/default/SPADES_5.svg
         # -- SIX --
-        resources/images/cards/CLUBS_6.svg
-        resources/images/cards/DIAMONDS_6.svg
-        resources/images/cards/HEARTS_6.svg
-        resources/images/cards/SPADES_6.svg
+        resources/images/cards/default/CLUBS_6.svg
+        resources/images/cards/default/DIAMONDS_6.svg
+        resources/images/cards/default/HEARTS_6.svg
+        resources/images/cards/default/SPADES_6.svg
         # -- SEVEN --
-        resources/images/cards/CLUBS_7.svg
-        resources/images/cards/DIAMONDS_7.svg
-        resources/images/cards/HEARTS_7.svg
-        resources/images/cards/SPADES_7.svg
+        resources/images/cards/default/CLUBS_7.svg
+        resources/images/cards/default/DIAMONDS_7.svg
+        resources/images/cards/default/HEARTS_7.svg
+        resources/images/cards/default/SPADES_7.svg
         # -- EIGHT --
-        resources/images/cards/CLUBS_8.svg
-        resources/images/cards/DIAMONDS_8.svg
-        resources/images/cards/HEARTS_8.svg
-        resources/images/cards/SPADES_8.svg
+        resources/images/cards/default/CLUBS_8.svg
+        resources/images/cards/default/DIAMONDS_8.svg
+        resources/images/cards/default/HEARTS_8.svg
+        resources/images/cards/default/SPADES_8.svg
         # -- NINE --
-        resources/images/cards/CLUBS_9.svg
-        resources/images/cards/DIAMONDS_9.svg
-        resources/images/cards/HEARTS_9.svg
-        resources/images/cards/SPADES_9.svg
+        resources/images/cards/default/CLUBS_9.svg
+        resources/images/cards/default/DIAMONDS_9.svg
+        resources/images/cards/default/HEARTS_9.svg
+        resources/images/cards/default/SPADES_9.svg
         # -- TEN --
-        resources/images/cards/CLUBS_10.svg
-        resources/images/cards/DIAMONDS_10.svg
-        resources/images/cards/HEARTS_10.svg
-        resources/images/cards/SPADES_10.svg
+        resources/images/cards/default/CLUBS_10.svg
+        resources/images/cards/default/DIAMONDS_10.svg
+        resources/images/cards/default/HEARTS_10.svg
+        resources/images/cards/default/SPADES_10.svg
         # -- JACK --
-        resources/images/cards/CLUBS_J.svg
-        resources/images/cards/DIAMONDS_J.svg
-        resources/images/cards/HEARTS_J.svg
-        resources/images/cards/SPADES_J.svg
+        resources/images/cards/default/CLUBS_J.svg
+        resources/images/cards/default/DIAMONDS_J.svg
+        resources/images/cards/default/HEARTS_J.svg
+        resources/images/cards/default/SPADES_J.svg
         # -- QUEEN --
-        resources/images/cards/CLUBS_Q.svg
-        resources/images/cards/DIAMONDS_Q.svg
-        resources/images/cards/HEARTS_Q.svg
-        resources/images/cards/SPADES_Q.svg
+        resources/images/cards/default/CLUBS_Q.svg
+        resources/images/cards/default/DIAMONDS_Q.svg
+        resources/images/cards/default//HEARTS_Q.svg
+        resources/images/cards/default/SPADES_Q.svg
         # -- KING --
-        resources/images/cards/CLUBS_K.svg
-        resources/images/cards/DIAMONDS_K.svg
-        resources/images/cards/HEARTS_K.svg
-        resources/images/cards/SPADES_K.svg
+        resources/images/cards/default/CLUBS_K.svg
+        resources/images/cards/default/DIAMONDS_K.svg
+        resources/images/cards/default/HEARTS_K.svg
+        resources/images/cards/default/SPADES_K.svg
         # -- ACE --
-        resources/images/cards/CLUBS_A.svg
-        resources/images/cards/DIAMONDS_A.svg
-        resources/images/cards/HEARTS_A.svg
-        resources/images/cards/SPADES_A.svg
+        resources/images/cards/default/CLUBS_A.svg
+        resources/images/cards/default/DIAMONDS_A.svg
+        resources/images/cards/default/HEARTS_A.svg
+        resources/images/cards/default/SPADES_A.svg
+        # Cards big classic
+        # Figures
+        resources/images/cards/classic/CLUBS_J_img.png
+        resources/images/cards/classic/CLUBS_Q_img.png
+        resources/images/cards/classic/CLUBS_K_img.png
+        resources/images/cards/classic/DIAMONDS_J_img.png
+        resources/images/cards/classic/DIAMONDS_Q_img.png
+        resources/images/cards/classic/DIAMONDS_K_img.png
+        resources/images/cards/classic/HEARTS_J_img.png
+        resources/images/cards/classic/HEARTS_Q_img.png
+        resources/images/cards/classic/HEARTS_K_img.png
+        resources/images/cards/classic/SPADES_J_img.png
+        resources/images/cards/classic/SPADES_Q_img.png
+        resources/images/cards/classic/SPADES_K_img.png
+        # -- TWO --
+        resources/images/cards/classic/CLUBS_2.svg
+        resources/images/cards/classic/DIAMONDS_2.svg
+        resources/images/cards/classic/HEARTS_2.svg
+        resources/images/cards/classic/SPADES_2.svg
+        # -- THREE --
+        resources/images/cards/classic/CLUBS_3.svg
+        resources/images/cards/classic/DIAMONDS_3.svg
+        resources/images/cards/classic/HEARTS_3.svg
+        resources/images/cards/classic/SPADES_3.svg
+        # -- FOUR --
+        resources/images/cards/classic/CLUBS_4.svg
+        resources/images/cards/classic/DIAMONDS_4.svg
+        resources/images/cards/classic/HEARTS_4.svg
+        resources/images/cards/classic/SPADES_4.svg
+        # -- FIVE --
+        resources/images/cards/classic/CLUBS_5.svg
+        resources/images/cards/classic/DIAMONDS_5.svg
+        resources/images/cards/classic/HEARTS_5.svg
+        resources/images/cards/classic/SPADES_5.svg
+        # -- SIX --
+        resources/images/cards/classic/CLUBS_6.svg
+        resources/images/cards/classic/DIAMONDS_6.svg
+        resources/images/cards/classic/HEARTS_6.svg
+        resources/images/cards/classic/SPADES_6.svg
+        # -- SEVEN --
+        resources/images/cards/classic/CLUBS_7.svg
+        resources/images/cards/classic/DIAMONDS_7.svg
+        resources/images/cards/classic/HEARTS_7.svg
+        resources/images/cards/classic/SPADES_7.svg
+        # -- EIGHT --
+        resources/images/cards/classic/CLUBS_8.svg
+        resources/images/cards/classic/DIAMONDS_8.svg
+        resources/images/cards/classic/HEARTS_8.svg
+        resources/images/cards/classic/SPADES_8.svg
+        # -- NINE --
+        resources/images/cards/classic/CLUBS_9.svg
+        resources/images/cards/classic/DIAMONDS_9.svg
+        resources/images/cards/classic/HEARTS_9.svg
+        resources/images/cards/classic/SPADES_9.svg
+        # -- TEN --
+        resources/images/cards/classic/CLUBS_10.svg
+        resources/images/cards/classic/DIAMONDS_10.svg
+        resources/images/cards/classic/HEARTS_10.svg
+        resources/images/cards/classic/SPADES_10.svg
+        # -- JACK --
+        resources/images/cards/classic/CLUBS_J.svg
+        resources/images/cards/classic/DIAMONDS_J.svg
+        resources/images/cards/classic/HEARTS_J.svg
+        resources/images/cards/classic/SPADES_J.svg
+        # -- QUEEN --
+        resources/images/cards/classic/CLUBS_Q.svg
+        resources/images/cards/classic/DIAMONDS_Q.svg
+        resources/images/cards/classic//HEARTS_Q.svg
+        resources/images/cards/classic/SPADES_Q.svg
+        # -- KING --
+        resources/images/cards/classic/CLUBS_K.svg
+        resources/images/cards/classic/DIAMONDS_K.svg
+        resources/images/cards/classic/HEARTS_K.svg
+        resources/images/cards/classic/SPADES_K.svg
+        # -- ACE --
+        resources/images/cards/classic/CLUBS_A.svg
+        resources/images/cards/classic/DIAMONDS_A.svg
+        resources/images/cards/classic/HEARTS_A.svg
+        resources/images/cards/classic/SPADES_A.svg
         # Fonts
         fonts/georgia.ttf
         fonts/georgiab.ttf

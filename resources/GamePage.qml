@@ -14,7 +14,9 @@ Page {
     Shortcut {
         sequence: "2"
         onActivated: {
-            console.log("bet/raised")
+            backend._change_bet_open();
+            optionsColumn.visible = false
+            raiseRow.visible = true
         }
     }
 
@@ -133,40 +135,6 @@ Page {
                     }
                 }
             }
-            /*
-            Row {
-                spacing: 5
-
-                Text {
-                    font.pixelSize: 18
-                    text: (backend.uiTrigger, backend.getPlayerName(index))
-                }
-
-                Text {
-                    font.pixelSize: 18
-                    text: (backend.uiTrigger, backend.getBettingState(index))
-                }
-
-                Text {
-                    font.pixelSize: 18
-                    text: (backend.uiTrigger, backend.getBalance(index))
-                }
-
-                Text {
-                    font.pixelSize: 18
-                    text: (backend.uiTrigger, backend.getLoans(index))
-                }
-
-                Text {
-                    font.pixelSize: 18
-                    text: (backend.uiTrigger, backend.getCurrentBet(index))
-                }
-   
-                Text {
-                    font.pixelSize: 18
-                    text: (backend.uiTrigger, backend.getActingPlayer(index))
-                }
-            }*/
         }
     }
 
@@ -254,6 +222,14 @@ Page {
             width: 135
             height: 178
             fillMode: Image.PreserveAspectFit 
+
+            Image {
+                id: innerFlop1Img
+                anchors.centerIn: parent
+                width: 86
+                height: 134
+                fillMode: Image.PreserveAspectFit 
+            }
         }
 
         Image {
@@ -262,6 +238,14 @@ Page {
             width: 135
             height: 178
             fillMode: Image.PreserveAspectFit 
+
+            Image {
+                id: innerFlop2Img
+                anchors.centerIn: parent
+                width: 86
+                height: 134
+                fillMode: Image.PreserveAspectFit 
+            }
         }
 
         Image {
@@ -270,6 +254,14 @@ Page {
             width: 135
             height: 178
             fillMode: Image.PreserveAspectFit 
+
+            Image {
+                id: innerFlop3Img
+                anchors.centerIn: parent
+                width: 86
+                height: 134
+                fillMode: Image.PreserveAspectFit 
+            }
         }
 
         Image {
@@ -278,6 +270,14 @@ Page {
             width: 135
             height: 178
             fillMode: Image.PreserveAspectFit 
+
+            Image {
+                id: innerTurnImg
+                anchors.centerIn: parent
+                width: 86
+                height: 134
+                fillMode: Image.PreserveAspectFit 
+            }
         }
 
         Image {
@@ -286,6 +286,14 @@ Page {
             width: 135
             height: 178
             fillMode: Image.PreserveAspectFit 
+
+            Image {
+                id: innerRiverImg
+                anchors.centerIn: parent
+                width: 86
+                height: 134
+                fillMode: Image.PreserveAspectFit 
+            }
         }
     }
 
@@ -333,6 +341,14 @@ Page {
             height: 178
             fillMode: Image.PreserveAspectFit 
 
+            Image {
+                id: innerLeftCard
+                anchors.centerIn: parent
+                width: 86
+                height: 134
+                fillMode: Image.PreserveAspectFit 
+            }
+
             property string fallbackSource: "qrc:/PokerApp/resources/images/cards/back.png"
 
             // 2. Detect when an error occurs
@@ -349,6 +365,14 @@ Page {
             width: 135
             height: 178
             fillMode: Image.PreserveAspectFit 
+
+            Image {
+                id: innerRightCard
+                anchors.centerIn: parent
+                width: 86
+                height: 134
+                fillMode: Image.PreserveAspectFit 
+            }
 
             property string fallbackSource: "qrc:/PokerApp/resources/images/cards/back.png"
 
@@ -423,6 +447,7 @@ Page {
                         font.pixelSize: 20
                     }
                 }
+
                 Text {
                     text: backend.betOpts[1]
                     color: "white"; font.pixelSize: 20
@@ -437,9 +462,11 @@ Page {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
                 onClicked: {
-                    backend._change_bet_open();
-                    optionsColumn.visible = false
-                    raiseRow.visible = true
+                    if (backend.betOpts[1] !== "-") {
+                        backend._change_bet_open();
+                        optionsColumn.visible = false
+                        raiseRow.visible = true
+                    }
                 }
             }
         }
@@ -580,13 +607,17 @@ Page {
         target: backend
 
         function onUpdatedGamePage() {
-            if (backend.leftCard && backend.leftCard !== "")
-                leftCard.source = "qrc:/PokerApp/resources/images/cards/" + backend.leftCard + ".svg"
+            if (backend.leftCard && backend.leftCard !== "") {
+                leftCard.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.leftCard + ".svg"
+                innerLeftCard.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.leftCard + "_img.png"
+            }
             else
                 leftCard.source = "qrc:/PokerApp/resources/images/cards/back.png"
 
-            if (backend.rightCard && backend.rightCard !== "")
-                rightCard.source = "qrc:/PokerApp/resources/images/cards/" + backend.rightCard + ".svg"
+            if (backend.rightCard && backend.rightCard !== "") {
+                rightCard.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.rightCard + ".svg"
+                innerRightCard.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.rightCard + "_img.png"
+            }
             else
                 rightCard.source = "qrc:/PokerApp/resources/images/cards/back.png"
 
@@ -597,13 +628,18 @@ Page {
                 leftCard.source = "qrc:/PokerApp/resources/images/cards/back.png"
                 rightCard.source = "qrc:/PokerApp/resources/images/cards/back.png"
             } else if (backend.bettingRound === "FLOP") {
-                flop1Img.source = "qrc:/PokerApp/resources/images/cards/" + backend.comCards[0] + ".svg"
-                flop2Img.source = "qrc:/PokerApp/resources/images/cards/" + backend.comCards[1] + ".svg"
-                flop3Img.source = "qrc:/PokerApp/resources/images/cards/" + backend.comCards[2] + ".svg"
+                flop1Img.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[0] + ".svg"
+                flop2Img.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[1] + ".svg"
+                flop3Img.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[2] + ".svg"
+                innerFlop1Img.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[0] + "_img.png"
+                innerFlop2Img.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[1] + "_img.png"
+                innerFlop3Img.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[2] + "_img.png"
             } else if (backend.bettingRound === "TURN") {
-                turnImg.source = "qrc:/PokerApp/resources/images/cards/" + backend.comCards[3] + ".svg"
+                turnImg.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[3] + ".svg"
+                innerTurnImg.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[3] + "_img.png"
             } else if (backend.bettingRound === "RIVER") {
-                riverImg.source = "qrc:/PokerApp/resources/images/cards/" + backend.comCards[4] + ".svg"
+                riverImg.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[4] + ".svg"
+                innerRiverImg.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[4] + "_img.png"
             }
 
             if (backend.betOpts[0] === "-")

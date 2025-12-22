@@ -80,7 +80,6 @@ QString Backend::getPort() const { return m_port; }
 QString Backend::getName() const { return m_clientName; }
 QString Backend::getLobbySize() const { return QString::number(playerInLobby); }
 QStringList Backend::getPlayerList() const { return m_playerList; }
-
 int Backend::getClientIndex() const { return clientIndex; }
 
 QString Backend::getLeftCard() const

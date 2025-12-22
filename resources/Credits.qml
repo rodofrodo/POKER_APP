@@ -71,7 +71,7 @@ Page {
 
         Text {
             text: "Many of you may be wondering why I decided to take on such a large project. The answer is simple: if I truly enjoy working on something, why would I limit myself to building only a small application? I wouldn't necessarily describe this game as massive, but I invested a significant amount of time in it because it was my first experience developing a desktop application in C++."
-            width: 900 
+            width: 850 
             wrapMode: Text.WordWrap 
             horizontalAlignment: Text.AlignJustify
             font.pixelSize: 20
@@ -80,7 +80,7 @@ Page {
 
         Text {
             text: "I chose to use the Qt framework because, in my opinion, it most closely resembles C# WPF. I have always been curious about how to build professional-grade applications in C++, especially given its ability to support cross-platform development."
-            width: 900
+            width: 850
             wrapMode: Text.WordWrap 
             horizontalAlignment: Text.AlignJustify
             font.pixelSize: 20
@@ -89,7 +89,7 @@ Page {
 
         Text {
             text: "Expanding my C++ knowledge was an enjoyable challenge. While it isn't my favorite language, I don't dislike it either. Perhaps I simply need more time and experience to fully appreciate it."
-            width: 900
+            width: 850
             wrapMode: Text.WordWrap 
             horizontalAlignment: Text.AlignJustify
             font.pixelSize: 20
