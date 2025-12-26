@@ -16,7 +16,7 @@ namespace prompt
         int highbet = (highestBet.value == VAL::CLEAR) ? VAL::EMPTY : highestBet.value;
         int senderbet = (sender.currentBet.value == VAL::CLEAR) ? VAL::EMPTY : sender.currentBet.value;
         int val_min = (highbet + minimalRaiseAmount); // minimal raise, e.g. +$5.00
-        int val_max = sender.balance;
+        int val_max = sender.balance + sender.currentBet.value; // !!!
         double val_min_double = static_cast<double>(val_min) / 100.0;
         double val_max_double = static_cast<double>(val_max) / 100.0;
         return { val_min, val_max };

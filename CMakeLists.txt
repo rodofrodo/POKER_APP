@@ -138,74 +138,77 @@ qt_add_qml_module(POKER_APP # <-- This target reference is now known
         resources/images/cards/small/DIAMONDS_A.svg
         resources/images/cards/small/HEARTS_A.svg
         resources/images/cards/small/SPADES_A.svg
-        # Cards big default
-        resources/images/cards/back.png
+        # Cards big modern
+        resources/images/cards/back.png # fallback
+        resources/images/cards/modern/back.png
         # -- TWO --
-        resources/images/cards/default/CLUBS_2.svg
-        resources/images/cards/default/DIAMONDS_2.svg
-        resources/images/cards/default/HEARTS_2.svg
-        resources/images/cards/default/SPADES_2.svg
+        resources/images/cards/modern/CLUBS_2.svg
+        resources/images/cards/modern/DIAMONDS_2.svg
+        resources/images/cards/modern/HEARTS_2.svg
+        resources/images/cards/modern/SPADES_2.svg
         # -- THREE --
-        resources/images/cards/default/CLUBS_3.svg
-        resources/images/cards/default/DIAMONDS_3.svg
-        resources/images/cards/default/HEARTS_3.svg
-        resources/images/cards/default/SPADES_3.svg
+        resources/images/cards/modern/CLUBS_3.svg
+        resources/images/cards/modern/DIAMONDS_3.svg
+        resources/images/cards/modern/HEARTS_3.svg
+        resources/images/cards/modern/SPADES_3.svg
         # -- FOUR --
-        resources/images/cards/default/CLUBS_4.svg
-        resources/images/cards/default/DIAMONDS_4.svg
-        resources/images/cards/default/HEARTS_4.svg
-        resources/images/cards/default/SPADES_4.svg
+        resources/images/cards/modern/CLUBS_4.svg
+        resources/images/cards/modern/DIAMONDS_4.svg
+        resources/images/cards/modern/HEARTS_4.svg
+        resources/images/cards/modern/SPADES_4.svg
         # -- FIVE --
-        resources/images/cards/default/CLUBS_5.svg
-        resources/images/cards/default/DIAMONDS_5.svg
-        resources/images/cards/default/HEARTS_5.svg
-        resources/images/cards/default/SPADES_5.svg
+        resources/images/cards/modern/CLUBS_5.svg
+        resources/images/cards/modern/DIAMONDS_5.svg
+        resources/images/cards/modern/HEARTS_5.svg
+        resources/images/cards/modern/SPADES_5.svg
         # -- SIX --
-        resources/images/cards/default/CLUBS_6.svg
-        resources/images/cards/default/DIAMONDS_6.svg
-        resources/images/cards/default/HEARTS_6.svg
-        resources/images/cards/default/SPADES_6.svg
+        resources/images/cards/modern/CLUBS_6.svg
+        resources/images/cards/modern/DIAMONDS_6.svg
+        resources/images/cards/modern/HEARTS_6.svg
+        resources/images/cards/modern/SPADES_6.svg
         # -- SEVEN --
-        resources/images/cards/default/CLUBS_7.svg
-        resources/images/cards/default/DIAMONDS_7.svg
-        resources/images/cards/default/HEARTS_7.svg
-        resources/images/cards/default/SPADES_7.svg
+        resources/images/cards/modern/CLUBS_7.svg
+        resources/images/cards/modern/DIAMONDS_7.svg
+        resources/images/cards/modern/HEARTS_7.svg
+        resources/images/cards/modern/SPADES_7.svg
         # -- EIGHT --
-        resources/images/cards/default/CLUBS_8.svg
-        resources/images/cards/default/DIAMONDS_8.svg
-        resources/images/cards/default/HEARTS_8.svg
-        resources/images/cards/default/SPADES_8.svg
+        resources/images/cards/modern/CLUBS_8.svg
+        resources/images/cards/modern/DIAMONDS_8.svg
+        resources/images/cards/modern/HEARTS_8.svg
+        resources/images/cards/modern/SPADES_8.svg
         # -- NINE --
-        resources/images/cards/default/CLUBS_9.svg
-        resources/images/cards/default/DIAMONDS_9.svg
-        resources/images/cards/default/HEARTS_9.svg
-        resources/images/cards/default/SPADES_9.svg
+        resources/images/cards/modern/CLUBS_9.svg
+        resources/images/cards/modern/DIAMONDS_9.svg
+        resources/images/cards/modern/HEARTS_9.svg
+        resources/images/cards/modern/SPADES_9.svg
         # -- TEN --
-        resources/images/cards/default/CLUBS_10.svg
-        resources/images/cards/default/DIAMONDS_10.svg
-        resources/images/cards/default/HEARTS_10.svg
-        resources/images/cards/default/SPADES_10.svg
+        resources/images/cards/modern/CLUBS_10.svg
+        resources/images/cards/modern/DIAMONDS_10.svg
+        resources/images/cards/modern/HEARTS_10.svg
+        resources/images/cards/modern/SPADES_10.svg
         # -- JACK --
-        resources/images/cards/default/CLUBS_J.svg
-        resources/images/cards/default/DIAMONDS_J.svg
-        resources/images/cards/default/HEARTS_J.svg
-        resources/images/cards/default/SPADES_J.svg
+        resources/images/cards/modern/CLUBS_J.svg
+        resources/images/cards/modern/DIAMONDS_J.svg
+        resources/images/cards/modern/HEARTS_J.svg
+        resources/images/cards/modern/SPADES_J.svg
         # -- QUEEN --
-        resources/images/cards/default/CLUBS_Q.svg
-        resources/images/cards/default/DIAMONDS_Q.svg
-        resources/images/cards/default//HEARTS_Q.svg
-        resources/images/cards/default/SPADES_Q.svg
+        resources/images/cards/modern/CLUBS_Q.svg
+        resources/images/cards/modern/DIAMONDS_Q.svg
+        resources/images/cards/modern/HEARTS_Q.svg
+        resources/images/cards/modern/SPADES_Q.svg
         # -- KING --
-        resources/images/cards/default/CLUBS_K.svg
-        resources/images/cards/default/DIAMONDS_K.svg
-        resources/images/cards/default/HEARTS_K.svg
-        resources/images/cards/default/SPADES_K.svg
+        resources/images/cards/modern/CLUBS_K.svg
+        resources/images/cards/modern/DIAMONDS_K.svg
+        resources/images/cards/modern/HEARTS_K.svg
+        resources/images/cards/modern/SPADES_K.svg
         # -- ACE --
-        resources/images/cards/default/CLUBS_A.svg
-        resources/images/cards/default/DIAMONDS_A.svg
-        resources/images/cards/default/HEARTS_A.svg
-        resources/images/cards/default/SPADES_A.svg
+        resources/images/cards/modern/CLUBS_A.svg
+        resources/images/cards/modern/DIAMONDS_A.svg
+        resources/images/cards/modern/HEARTS_A.svg
+        resources/images/cards/modern/SPADES_A.svg
         # Cards big classic
+        resources/images/cards/classic/back_red.png
+        resources/images/cards/classic/back_blue.png
         # Figures
         resources/images/cards/classic/CLUBS_J_img.png
         resources/images/cards/classic/CLUBS_Q_img.png
@@ -289,6 +292,10 @@ qt_add_qml_module(POKER_APP # <-- This target reference is now known
         fonts/georgiab.ttf
         fonts/georgiai.ttf
         fonts/georgiaz.ttf
+        # Boards
+        resources/images/boards/board_lukewarm.svg
+        resources/images/boards/board_macao.svg
+        resources/images/boards/board_wine.svg
 )
 
 # 3. Link libraries (using the known target name).

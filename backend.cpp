@@ -168,6 +168,11 @@ QString Backend::getWinners() const
 
 int Backend::getUiTrigger() const { return m_uiTrigger; }
 
+QStringList Backend::getSidePots() const
+{
+    return m_sidePots;
+}
+
 QString Backend::getRaiseVal() const
 {
     return "$" + QString::number(m_raiseVal / 100.0, 'f', 2);
@@ -249,7 +254,7 @@ void Backend::processBuffer(const QString& msg)
             QStringList players = parts[2].split("#");
             if (ok)
             {
-                if (!hasConnected)
+                if (!hasConnected && !m_clientName.isEmpty())
                 {
                     hasConnected = true;
                     emit lobbyReady();
@@ -271,6 +276,7 @@ void Backend::processBuffer(const QString& msg)
         pot = 0;
         topbet = { VAL::CLEAR, false };
         sidePots.clear();
+		m_sidePots.clear();
         QStringList parts = msg.split("&");
         if (parts.size() < 2) return; // SAFETY CHECK
         QString playerList = msg.split("&")[1];
@@ -434,6 +440,7 @@ void Backend::processBuffer(const QString& msg)
     else if (msg.startsWith(SIDE_POTS_MSG_PREFIX))
     {
         sidePots.clear();
+        m_sidePots.clear();
         auto parts = msg.split("&");
         if (parts.size() < 2) return;
         auto info = parts[1].split("|");
@@ -444,6 +451,7 @@ void Backend::processBuffer(const QString& msg)
             int amount = potParts[0].toInt();
             std::vector<QString> playersInvolved = utils::split(potParts[1].toStdString(), '#');
             sidePots.push_back({ amount, playersInvolved });
+			m_sidePots.append("$" + QString::number(amount / 100.0, 'f', 2));
         }
     }
     else if (msg.startsWith(NEW_BET_MSG_PREFIX))
@@ -477,7 +485,7 @@ void Backend::processBuffer(const QString& msg)
                     p.hasFolded = true;
                     break;
                 }
-                else if (mode == 4)
+                else if (mode == 4 || mode == 5)
                 {
                     calc = p.balance; // all-in
                     p.currentBet = { currBet, true };
@@ -682,8 +690,10 @@ void Backend::_change_bet_confirm()
         TUPLE::MinMax res = prompt::getDifferentBetOptions(topbet, playerMap[playerNames[currentPlayer]]);
         if (m_raiseVal >= res.max)
         {
+            // all-in
             sendMessage(QString::fromStdString(std::format("action&{}={}={}",
-                m_clientName.toStdString(), 4, playerMap[playerNames[currentPlayer]].balance)));
+                m_clientName.toStdString(), 5, playerMap[playerNames[currentPlayer]].balance)));
+            return;
         }
         sendMessage(QString::fromStdString(std::format("action&{}={}={}",
             m_clientName.toStdString(), 2, m_raiseVal)));
@@ -848,4 +858,12 @@ double Backend::getOpacity(int index)
     if (playerMap[playerNames[index]].hasFolded)
         return .5;
     return 1.0;
+}
+
+QString Backend::getSidePotsText(int index)
+{
+    if (sidePots.size() == 0) return "";
+    if (index >= sidePots.size()) return "";
+    if (index == 0) return "Main pot: ";
+	return "Side pot " + QString::number(index) + ": ";
 }

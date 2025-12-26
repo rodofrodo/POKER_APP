@@ -28,7 +28,7 @@ Page {
     }
 
     background: Image {
-        source: "qrc:/PokerApp/resources/images/board_classic.svg"
+        source: "qrc:/PokerApp/resources/images/boards/board_" + AppSettings.bgImg + ".svg"
     }
 
     FontLoader {
@@ -162,63 +162,93 @@ Page {
     }
 
     Column {
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top
-        anchors.topMargin: 200
+        anchors.horizontalCenter: communityCards.horizontalCenter
+        anchors.bottom: communityCards.top
+        anchors.bottomMargin: 90
+        spacing: 20
 
-        Row {
+        Column {
             anchors.horizontalCenter: parent.horizontalCenter
 
-            Text {
-                text: qsTr("Pot: ")
-                font.pixelSize: 48
-                horizontalAlignment: Text.AlignHCenter
-                color: "#ffffff"
+            Row {
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                Text {
+                    text: qsTr("Pot: ")
+                    font.pixelSize: 48
+                    horizontalAlignment: Text.AlignHCenter
+                    color: "#ffffff"
+                }
+
+                Text {
+                    id: potText
+                    text: "$0"
+                    font.pixelSize: 48
+                    horizontalAlignment: Text.AlignHCenter
+                    color: "#ffffff"
+                    font.bold: true
+                }
             }
 
-            Text {
-                id: potText
-                text: "$0"
-                font.pixelSize: 48
-                horizontalAlignment: Text.AlignHCenter
-                color: "#ffffff"
-                font.bold: true
+            Row {
+                id: callAmountRow
+                anchors.horizontalCenter: parent.horizontalCenter
+                visible: false
+
+                Text {
+                    text: qsTr("Call amount: ")
+                    font.pixelSize: 20
+                    horizontalAlignment: Text.AlignHCenter
+                    color: "#ffffff"
+                }
+
+                Text {
+                    id: callAmountText
+                    text: "$0"
+                    font.pixelSize: 20
+                    horizontalAlignment: Text.AlignHCenter
+                    color: "#ffffff"
+                    font.bold: true
+                }
             }
         }
 
         Row {
-            id: callAmountRow
-            anchors.horizontalCenter: parent.horizontalCenter
-            visible: false
+           anchors.horizontalCenter: parent.horizontalCenter
+           spacing: 15
 
-            Text {
-                text: "Call amount: "
-                font.pixelSize: 20
-                horizontalAlignment: Text.AlignHCenter
-                color: "#ffffff"
-            }
+           Repeater {
+               model: backend.sidePots.length
 
-            Text {
-                id: callAmountText
-                text: "$0"
-                font.pixelSize: 20
-                horizontalAlignment: Text.AlignHCenter
-                color: "#ffffff"
-                font.bold: true
-            }
+               Row {
+                   Text {
+                        text: backend.getSidePotsText(index)
+                        font.pixelSize: 20
+                        horizontalAlignment: Text.AlignHCenter
+                        color: "#ffffff"
+                   }
+
+                   Text {
+                       text: backend.sidePots[index]
+                       font.pixelSize: 20
+                       horizontalAlignment: Text.AlignHCenter
+                       color: "#ffffff"
+                       font.bold: true
+                   }
+               }
+           }
         }
     }
 
     Row {
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top
-        anchors.topMargin: 375
+        anchors.centerIn: parent
+        anchors.verticalCenterOffset: -50
         spacing: 25
         id: communityCards
 
         Image {
             id: flop1Img
-            source: "qrc:/PokerApp/resources/images/cards/back.png" 
+            source: "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
             width: 135
             height: 178
             fillMode: Image.PreserveAspectFit 
@@ -234,7 +264,7 @@ Page {
 
         Image {
             id: flop2Img
-            source: "qrc:/PokerApp/resources/images/cards/back.png" 
+            source: "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
             width: 135
             height: 178
             fillMode: Image.PreserveAspectFit 
@@ -250,7 +280,7 @@ Page {
 
         Image {
             id: flop3Img
-            source: "qrc:/PokerApp/resources/images/cards/back.png" 
+            source: "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
             width: 135
             height: 178
             fillMode: Image.PreserveAspectFit 
@@ -266,7 +296,7 @@ Page {
 
         Image {
             id: turnImg
-            source: "qrc:/PokerApp/resources/images/cards/back.png" 
+            source: "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
             width: 135
             height: 178
             fillMode: Image.PreserveAspectFit 
@@ -282,7 +312,7 @@ Page {
 
         Image {
             id: riverImg
-            source: "qrc:/PokerApp/resources/images/cards/back.png" 
+            source: "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
             width: 135
             height: 178
             fillMode: Image.PreserveAspectFit 
@@ -302,7 +332,7 @@ Page {
 
         anchors.horizontalCenter: communityCards.horizontalCenter
         anchors.top: communityCards.bottom
-        anchors.topMargin: 100
+        anchors.topMargin: 75
 
         text: "DEALING CARDS"
         font.family: georgiaBoldItalicFont.name
@@ -349,7 +379,7 @@ Page {
                 fillMode: Image.PreserveAspectFit 
             }
 
-            property string fallbackSource: "qrc:/PokerApp/resources/images/cards/back.png"
+            property string fallbackSource: "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
 
             // 2. Detect when an error occurs
             onStatusChanged: {
@@ -374,7 +404,7 @@ Page {
                 fillMode: Image.PreserveAspectFit 
             }
 
-            property string fallbackSource: "qrc:/PokerApp/resources/images/cards/back.png"
+            property string fallbackSource: "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
 
             // 2. Detect when an error occurs
             onStatusChanged: {
@@ -612,32 +642,32 @@ Page {
                 innerLeftCard.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.leftCard + "_img.png"
             }
             else
-                leftCard.source = "qrc:/PokerApp/resources/images/cards/back.png"
+                leftCard.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
 
             if (backend.rightCard && backend.rightCard !== "") {
                 rightCard.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.rightCard + ".svg"
                 innerRightCard.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.rightCard + "_img.png"
             }
             else
-                rightCard.source = "qrc:/PokerApp/resources/images/cards/back.png"
+                rightCard.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
 
             bettingRoundText.text = backend.bettingRound
             potText.text = backend.potVal
 
             if (backend.bettingRound == "DEALING CARDS") {
-                leftCard.source = "qrc:/PokerApp/resources/images/cards/back.png"
-                rightCard.source = "qrc:/PokerApp/resources/images/cards/back.png"
-            } else if (backend.bettingRound === "FLOP") {
+                leftCard.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
+                rightCard.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
+            } if (backend.bettingRound === "FLOP" || backend.bettingRound === "SHOWDOWN") {
                 flop1Img.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[0] + ".svg"
                 flop2Img.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[1] + ".svg"
                 flop3Img.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[2] + ".svg"
                 innerFlop1Img.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[0] + "_img.png"
                 innerFlop2Img.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[1] + "_img.png"
                 innerFlop3Img.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[2] + "_img.png"
-            } else if (backend.bettingRound === "TURN") {
+            } if (backend.bettingRound === "TURN" || backend.bettingRound === "SHOWDOWN") {
                 turnImg.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[3] + ".svg"
                 innerTurnImg.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[3] + "_img.png"
-            } else if (backend.bettingRound === "RIVER") {
+            } if (backend.bettingRound === "RIVER" || backend.bettingRound === "SHOWDOWN") {
                 riverImg.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[4] + ".svg"
                 innerRiverImg.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[4] + "_img.png"
             }

@@ -31,6 +31,7 @@ Q_PROPERTY(QStringList betOpts READ getBetOpts NOTIFY updatedGamePage)
 Q_PROPERTY(QString topbetVal READ getTopbetValue NOTIFY updatedGamePage)
 Q_PROPERTY(QString winners READ getWinners NOTIFY updatedGamePage)
 Q_PROPERTY(int uiTrigger READ getUiTrigger NOTIFY updatedGamePage)
+Q_PROPERTY(QStringList sidePots READ getSidePots NOTIFY updatedGamePage)
 
 Q_PROPERTY(QString raiseVal READ getRaiseVal NOTIFY raiseValueChanged)
 Q_PROPERTY(double raiseUpOpacity READ getRaiseUpOpacity NOTIFY raiseValueChanged)
@@ -59,6 +60,7 @@ public:
     QString getTopbetValue() const;
     QString getWinners() const;
     int getUiTrigger() const;
+	QStringList getSidePots() const;
 
     QString getRaiseVal() const;
 	double getRaiseUpOpacity() const;
@@ -91,6 +93,7 @@ public:
     Q_INVOKABLE QString getLeftCard(int index);
 	Q_INVOKABLE QString getRightCard(int index);
 	Q_INVOKABLE double getOpacity(int index);
+    Q_INVOKABLE QString getSidePotsText(int index);
 
     QString m_ipAddress;
     QString m_port;
@@ -116,6 +119,7 @@ private:
     QString m_buffer;
     int m_uiTrigger;
     int m_raiseVal;
+	QStringList m_sidePots;
 
     bool gotPlayers;
     bool gotGameInfo;
