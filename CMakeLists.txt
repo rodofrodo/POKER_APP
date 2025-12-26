@@ -44,6 +44,8 @@ qt_add_qml_module(POKER_APP # <-- This target reference is now known
         resources/MainMenu.qml
         resources/ConnectPage.qml
         resources/Credits.qml
+        resources/FadeImage.qml
+        resources/FlipCard.qml
         resources/GamePage.qml
         resources/LobbyPage.qml
         resources/OptionsPage.qml

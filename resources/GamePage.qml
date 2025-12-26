@@ -50,107 +50,97 @@ Page {
         id: georgiaBoldItalicFont
         source: "qrc:/PokerApp/fonts/georgiaz.ttf" 
     }
-    /*
-    Column {
-        id: playerColumn
-        spacing: 15
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.margins: 10*/
+   
+    Repeater {
+        model: backend.lobbySize
+        
+        FadeImage {
+            source: (backend.uiTrigger, backend.getBackground(index))
+            opacity: (backend.uiTrigger, backend.getOpacity(index))
+            fillMode: Image.PreserveAspectFit
 
-        Repeater {
-            model: backend.lobbySize
-            
-            Image {
-                source: (backend.uiTrigger, backend.getBackground(index))
-                opacity: (backend.uiTrigger, backend.getOpacity(index))
-                width: 280
-                height: 73
-                fillMode: Image.PreserveAspectFit
+            anchors.horizontalCenter: (backend.uiTrigger, backend.canAlignHCenter(index) ? parent.horizontalCenter : undefined)
+            anchors.verticalCenter: (backend.uiTrigger, backend.canAlignVCenter(index) ? parent.verticalCenter : undefined)
+            anchors.verticalCenterOffset: (backend.uiTrigger, backend.canAlignVCenter(index) ? -50 : undefined)
 
-                anchors.horizontalCenter: (backend.uiTrigger, backend.canAlignHCenter(index) ? parent.horizontalCenter : undefined)
-                anchors.verticalCenter: (backend.uiTrigger, backend.canAlignVCenter(index) ? parent.verticalCenter : undefined)
-                anchors.verticalCenterOffset: (backend.uiTrigger, backend.canAlignVCenter(index) ? -50 : undefined)
+            anchors.top: (backend.uiTrigger, backend.canAlignTop(index) ? parent.top : undefined)
+            anchors.bottom: (backend.uiTrigger, backend.canAlignBottom(index) ? parent.bottom : undefined)
+            anchors.left: (backend.uiTrigger, backend.canAlignLeft(index) ? parent.left : undefined)
+            anchors.right: (backend.uiTrigger, backend.canAlignRight(index) ? parent.right : undefined)
 
-                anchors.top: (backend.uiTrigger, backend.canAlignTop(index) ? parent.top : undefined)
-                anchors.bottom: (backend.uiTrigger, backend.canAlignBottom(index) ? parent.bottom : undefined)
-                anchors.left: (backend.uiTrigger, backend.canAlignLeft(index) ? parent.left : undefined)
-                anchors.right: (backend.uiTrigger, backend.canAlignRight(index) ? parent.right : undefined)
+            anchors.topMargin: (backend.uiTrigger, backend.canAlignTop(index) ? backend.getTopMargin(index) : 0)
+            anchors.bottomMargin: (backend.uiTrigger, backend.canAlignBottom(index) ? backend.getBottomMargin(index) : 0)
+            anchors.leftMargin: (backend.uiTrigger, backend.canAlignLeft(index) ? backend.getLeftMargin(index) : 0)
+            anchors.rightMargin: (backend.uiTrigger, backend.canAlignRight(index) ? backend.getRightMargin(index) : 0)
 
-                anchors.topMargin: (backend.uiTrigger, backend.canAlignTop(index) ? backend.getTopMargin(index) : 0)
-                anchors.bottomMargin: (backend.uiTrigger, backend.canAlignBottom(index) ? backend.getBottomMargin(index) : 0)
-                anchors.leftMargin: (backend.uiTrigger, backend.canAlignLeft(index) ? backend.getLeftMargin(index) : 0)
-                anchors.rightMargin: (backend.uiTrigger, backend.canAlignRight(index) ? backend.getRightMargin(index) : 0)
-
-                Column {
-                    //spacing: 3
-                    anchors.left: parent.left
-                    anchors.leftMargin: 25 
-                    anchors.verticalCenter: parent.verticalCenter
-
-                    Row {
-                        spacing: 8
-
-                        Text {
-                            text: (backend.uiTrigger, backend.getPlayerName(index))
-                            font.pixelSize: 20
-                            horizontalAlignment: Text.AlignLeft
-                            color: (backend.uiTrigger, backend.getTextColor(index))
-                            font.bold: true
-                        }
-
-                        Text {
-                            text: (backend.uiTrigger, backend.getLoans(index))
-                            font.pixelSize: 20
-                            horizontalAlignment: Text.AlignLeft
-                            color: "#0077FF"
-                            font.bold: true
-                        }
-                    }
-
-                    Text {
-                        text: (backend.uiTrigger, backend.getBalance(index))
-                        font.pixelSize: 16
-                        horizontalAlignment: Text.AlignHCenter
-                        color: (backend.uiTrigger, backend.getTextColor(index))
-                    }
-                }
+            Column {
+                //spacing: 3
+                anchors.left: parent.left
+                anchors.leftMargin: 25 
+                anchors.verticalCenter: parent.verticalCenter
 
                 Row {
-                    anchors.right: parent.right
-                    anchors.rightMargin: 25
-                    anchors.verticalCenter: parent.verticalCenter
                     spacing: 8
 
                     Text {
-                        id: betValText
-                        text: (backend.uiTrigger, backend.getCurrentBet(index))
-                        font.pixelSize: 24
-                        horizontalAlignment: Text.AlignHCenter
-                        visible: text !== "None" && backend.bettingRound !== "SHOWDOWN"
-                        color: (backend.uiTrigger, backend.getPriceTextColor(index))
+                        text: (backend.uiTrigger, backend.getPlayerName(index))
+                        font.pixelSize: 20
+                        horizontalAlignment: Text.AlignLeft
+                        color: (backend.uiTrigger, backend.getTextColor(index))
                         font.bold: true
                     }
 
-                    Image {
-                        visible: backend.bettingRound === "SHOWDOWN" && (backend.uiTrigger, backend.getLeftCard(index)) !== "back.png"
-                        source: "qrc:/PokerApp/resources/images/cards/small/" + (backend.uiTrigger, backend.getLeftCard(index))
-                        width: 28
-                        height: 46
-                        fillMode: Image.PreserveAspectFit 
-                    }
-
-                    Image {
-                        visible: backend.bettingRound === "SHOWDOWN" && (backend.uiTrigger, backend.getRightCard(index)) !== "back.png"
-                        source: "qrc:/PokerApp/resources/images/cards/small/" + (backend.uiTrigger, backend.getRightCard(index))
-                        width: 28
-                        height: 46
-                        fillMode: Image.PreserveAspectFit 
+                    Text {
+                        text: (backend.uiTrigger, backend.getLoans(index))
+                        font.pixelSize: 20
+                        horizontalAlignment: Text.AlignLeft
+                        color: "#0077FF"
+                        font.bold: true
                     }
                 }
+
+                Text {
+                    text: (backend.uiTrigger, backend.getBalance(index))
+                    font.pixelSize: 16
+                    horizontalAlignment: Text.AlignHCenter
+                    color: (backend.uiTrigger, backend.getTextColor(index))
+                }
             }
-        }/*
-    }*/
+
+            Row {
+                anchors.right: parent.right
+                anchors.rightMargin: 25
+                anchors.verticalCenter: parent.verticalCenter
+                spacing: 8
+
+                Text {
+                    id: betValText
+                    text: (backend.uiTrigger, backend.getCurrentBet(index))
+                    font.pixelSize: 24
+                    horizontalAlignment: Text.AlignHCenter
+                    visible: text !== "None" && backend.bettingRound !== "SHOWDOWN"
+                    color: (backend.uiTrigger, backend.getPriceTextColor(index))
+                    font.bold: true
+                }
+
+                Image {
+                    visible: backend.bettingRound === "SHOWDOWN" && (backend.uiTrigger, backend.getLeftCard(index)) !== "back.png"
+                    source: "qrc:/PokerApp/resources/images/cards/small/" + (backend.uiTrigger, backend.getLeftCard(index))
+                    width: 28
+                    height: 46
+                    fillMode: Image.PreserveAspectFit 
+                }
+
+                Image {
+                    visible: backend.bettingRound === "SHOWDOWN" && (backend.uiTrigger, backend.getRightCard(index)) !== "back.png"
+                    source: "qrc:/PokerApp/resources/images/cards/small/" + (backend.uiTrigger, backend.getRightCard(index))
+                    width: 28
+                    height: 46
+                    fillMode: Image.PreserveAspectFit 
+                }
+            }
+        }
+    }
 
     Column {
         anchors.bottom: parent.bottom
@@ -260,84 +250,34 @@ Page {
         spacing: 25
         id: communityCards
 
-        Image {
-            id: flop1Img
-            source: "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
-            width: 135
-            height: 178
-            fillMode: Image.PreserveAspectFit 
-
-            Image {
-                id: innerFlop1Img
-                anchors.centerIn: parent
-                width: 86
-                height: 134
-                fillMode: Image.PreserveAspectFit 
-            }
+        FlipCard {
+            id: flop1Card
+            backSource: "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
+            shown: false
         }
 
-        Image {
-            id: flop2Img
-            source: "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
-            width: 135
-            height: 178
-            fillMode: Image.PreserveAspectFit 
-
-            Image {
-                id: innerFlop2Img
-                anchors.centerIn: parent
-                width: 86
-                height: 134
-                fillMode: Image.PreserveAspectFit 
-            }
+        FlipCard {
+            id: flop2Card
+            backSource: "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
+            shown: false
         }
 
-        Image {
-            id: flop3Img
-            source: "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
-            width: 135
-            height: 178
-            fillMode: Image.PreserveAspectFit 
-
-            Image {
-                id: innerFlop3Img
-                anchors.centerIn: parent
-                width: 86
-                height: 134
-                fillMode: Image.PreserveAspectFit 
-            }
+        FlipCard {
+            id: flop3Card
+            backSource: "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
+            shown: false
         }
 
-        Image {
-            id: turnImg
-            source: "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
-            width: 135
-            height: 178
-            fillMode: Image.PreserveAspectFit 
-
-            Image {
-                id: innerTurnImg
-                anchors.centerIn: parent
-                width: 86
-                height: 134
-                fillMode: Image.PreserveAspectFit 
-            }
+        FlipCard {
+            id: turnCard
+            backSource: "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
+            shown: false
         }
 
-        Image {
-            id: riverImg
-            source: "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
-            width: 135
-            height: 178
-            fillMode: Image.PreserveAspectFit 
-
-            Image {
-                id: innerRiverImg
-                anchors.centerIn: parent
-                width: 86
-                height: 134
-                fillMode: Image.PreserveAspectFit 
-            }
+        FlipCard {
+            id: riverCard
+            backSource: "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
+            shown: false
         }
     }
 
@@ -379,6 +319,18 @@ Page {
         anchors.bottomMargin: 105
         spacing: 25
 
+        FlipCard {
+            id: leftCard_flip
+            backSource: "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
+            shown: false
+        }
+
+        FlipCard {
+            id: rightCard_flip
+            backSource: "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
+            shown: false
+        }
+        /*
         Image {
             id: leftCard
             width: 135
@@ -427,7 +379,7 @@ Page {
                     source = fallbackSource
                 }
             }
-        }
+        }*/
     }
 
     Column {
@@ -652,38 +604,48 @@ Page {
 
         function onUpdatedGamePage() {
             if (backend.leftCard && backend.leftCard !== "") {
-                leftCard.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.leftCard + ".svg"
-                innerLeftCard.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.leftCard + "_img.png"
+                leftCard_flip.frontSource = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.leftCard + ".svg"
+                leftCard_flip.frontInnerSource = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.leftCard + "_img.png"
+                //leftCard_flip.shown = true
             }
-            else
-                leftCard.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
+            //else
+                //leftCard_flip.shown = false
 
             if (backend.rightCard && backend.rightCard !== "") {
-                rightCard.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.rightCard + ".svg"
-                innerRightCard.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.rightCard + "_img.png"
+                rightCard_flip.frontSource = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.rightCard + ".svg"
+                rightCard_flip.frontInnerSource = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.rightCard + "_img.png"
+                //rightCard_flip.shown = true
             }
-            else
-                rightCard.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
+            //else
+                //rightCard_flip.shown = false
 
             bettingRoundText.text = backend.bettingRound
             potText.text = backend.potVal
 
-            if (backend.bettingRound == "DEALING CARDS") {
-                leftCard.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
-                rightCard.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
+            if (backend.bettingRound === "DEALING CARDS") {
+                leftCard_flip.shown = false
+                rightCard_flip.shown = false
+            } if (backend.bettingRound === "PRE-FLOP") {
+                leftCard_flip.shown = true
+                rightCard_flip.shown = true
             } if (backend.bettingRound === "FLOP" || backend.bettingRound === "SHOWDOWN") {
-                flop1Img.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[0] + ".svg"
-                flop2Img.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[1] + ".svg"
-                flop3Img.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[2] + ".svg"
-                innerFlop1Img.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[0] + "_img.png"
-                innerFlop2Img.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[1] + "_img.png"
-                innerFlop3Img.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[2] + "_img.png"
+                flop1Card.frontSource = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[0] + ".svg"
+                flop1Card.frontInnerSource = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[0] + "_img.png"
+                flop1Card.shown = true
+                flop2Card.frontSource = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[1] + ".svg"
+                flop2Card.frontInnerSource = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[1] + "_img.png"
+                flop2Card.shown = true
+                flop3Card.frontSource = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[2] + ".svg"
+                flop3Card.frontInnerSource = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[2] + "_img.png"
+                flop3Card.shown = true
             } if (backend.bettingRound === "TURN" || backend.bettingRound === "SHOWDOWN") {
-                turnImg.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[3] + ".svg"
-                innerTurnImg.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[3] + "_img.png"
+                turnCard.frontSource = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[3] + ".svg"
+                turnCard.frontInnerSource = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[3] + "_img.png"
+                turnCard.shown = true
             } if (backend.bettingRound === "RIVER" || backend.bettingRound === "SHOWDOWN") {
-                riverImg.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[4] + ".svg"
-                innerRiverImg.source = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[4] + "_img.png"
+                riverCard.frontSource = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[4] + ".svg"
+                riverCard.frontInnerSource = "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + backend.comCards[4] + "_img.png"
+                riverCard.shown = true
             }
 
             if (backend.betOpts[0] === "-")

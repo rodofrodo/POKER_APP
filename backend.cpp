@@ -874,28 +874,24 @@ QString Backend::getSidePotsText(int index)
 bool Backend::canAlignTop(int index) 
 { 
     if (!MARGIN::isInitialized) return false;
-	qDebug() << index << MARGIN::BI[index] << MARGIN::top[MARGIN::BI[index]];
     return MARGIN::top[MARGIN::BI[index]] != -1; 
 }
 
 bool Backend::canAlignBottom(int index) 
 { 
     if (!MARGIN::isInitialized) return false;
-	qDebug() << index << MARGIN::BI[index] << MARGIN::bottom[MARGIN::BI[index]];
     return MARGIN::bottom[MARGIN::BI[index]] != -1; 
 }
 
 bool Backend::canAlignLeft(int index)
 { 
     if (!MARGIN::isInitialized) return false;
-	qDebug() << index << MARGIN::BI[index] << MARGIN::left[MARGIN::BI[index]];
     return MARGIN::left[MARGIN::BI[index]] != -1; 
 }
 
 bool Backend::canAlignRight(int index)
 { 
     if (!MARGIN::isInitialized) return false;
-	qDebug() << index << MARGIN::BI[index] << MARGIN::right[MARGIN::BI[index]];
     return MARGIN::right[MARGIN::BI[index]] != -1; 
 }
 // ----------------
