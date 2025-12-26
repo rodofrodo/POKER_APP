@@ -29,6 +29,7 @@ qt_add_executable(POKER_APP
     classes/GameCard.cpp
     SettingsManager.h
     SettingsManager.cpp
+    engine/margin_calc.h
     # --- ADD THIS LINE ---
     resources.rc
 )

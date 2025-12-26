@@ -50,13 +50,13 @@ Page {
         id: georgiaBoldItalicFont
         source: "qrc:/PokerApp/fonts/georgiaz.ttf" 
     }
-
+    /*
     Column {
         id: playerColumn
         spacing: 15
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.margins: 10
+        anchors.margins: 10*/
 
         Repeater {
             model: backend.lobbySize
@@ -67,6 +67,20 @@ Page {
                 width: 280
                 height: 73
                 fillMode: Image.PreserveAspectFit
+
+                anchors.horizontalCenter: (backend.uiTrigger, backend.canAlignHCenter(index) ? parent.horizontalCenter : undefined)
+                anchors.verticalCenter: (backend.uiTrigger, backend.canAlignVCenter(index) ? parent.verticalCenter : undefined)
+                anchors.verticalCenterOffset: (backend.uiTrigger, backend.canAlignVCenter(index) ? -50 : undefined)
+
+                anchors.top: (backend.uiTrigger, backend.canAlignTop(index) ? parent.top : undefined)
+                anchors.bottom: (backend.uiTrigger, backend.canAlignBottom(index) ? parent.bottom : undefined)
+                anchors.left: (backend.uiTrigger, backend.canAlignLeft(index) ? parent.left : undefined)
+                anchors.right: (backend.uiTrigger, backend.canAlignRight(index) ? parent.right : undefined)
+
+                anchors.topMargin: (backend.uiTrigger, backend.canAlignTop(index) ? backend.getTopMargin(index) : 0)
+                anchors.bottomMargin: (backend.uiTrigger, backend.canAlignBottom(index) ? backend.getBottomMargin(index) : 0)
+                anchors.leftMargin: (backend.uiTrigger, backend.canAlignLeft(index) ? backend.getLeftMargin(index) : 0)
+                anchors.rightMargin: (backend.uiTrigger, backend.canAlignRight(index) ? backend.getRightMargin(index) : 0)
 
                 Column {
                     //spacing: 3
@@ -135,8 +149,8 @@ Page {
                     }
                 }
             }
-        }
-    }
+        }/*
+    }*/
 
     Column {
         anchors.bottom: parent.bottom
@@ -362,7 +376,7 @@ Page {
     Row {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: 120
+        anchors.bottomMargin: 105
         spacing: 25
 
         Image {

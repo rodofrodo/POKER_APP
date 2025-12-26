@@ -302,10 +302,11 @@ void Backend::processBuffer(const QString& msg)
 			p.winningHandString = "";
             playerMap[p.name] = p;
             playerNames.push_back(p.name);
-            if (clientName == p.name)
+            if (m_clientName == p.name)
                 clientIndex = index;
             index++;
         }
+        MARGIN::init_and_rotate(playerNames.size(), clientIndex);
     }
     else if (msg.startsWith(BETTING_ORDER_MSG_PREFIX))
     {
@@ -866,4 +867,56 @@ QString Backend::getSidePotsText(int index)
     if (index >= sidePots.size()) return "";
     if (index == 0) return "Main pot: ";
 	return "Side pot " + QString::number(index) + ": ";
+}
+
+// margins
+// ----------------
+bool Backend::canAlignTop(int index) 
+{ 
+    if (!MARGIN::isInitialized) return false;
+	qDebug() << index << MARGIN::BI[index] << MARGIN::top[MARGIN::BI[index]];
+    return MARGIN::top[MARGIN::BI[index]] != -1; 
+}
+
+bool Backend::canAlignBottom(int index) 
+{ 
+    if (!MARGIN::isInitialized) return false;
+	qDebug() << index << MARGIN::BI[index] << MARGIN::bottom[MARGIN::BI[index]];
+    return MARGIN::bottom[MARGIN::BI[index]] != -1; 
+}
+
+bool Backend::canAlignLeft(int index)
+{ 
+    if (!MARGIN::isInitialized) return false;
+	qDebug() << index << MARGIN::BI[index] << MARGIN::left[MARGIN::BI[index]];
+    return MARGIN::left[MARGIN::BI[index]] != -1; 
+}
+
+bool Backend::canAlignRight(int index)
+{ 
+    if (!MARGIN::isInitialized) return false;
+	qDebug() << index << MARGIN::BI[index] << MARGIN::right[MARGIN::BI[index]];
+    return MARGIN::right[MARGIN::BI[index]] != -1; 
+}
+// ----------------
+
+// margins values
+// ----------------
+int Backend::getTopMargin(int index) { return MARGIN::top[MARGIN::BI[index]]; }
+int Backend::getBottomMargin(int index) { return MARGIN::bottom[MARGIN::BI[index]]; }
+int Backend::getLeftMargin(int index) { return MARGIN::left[MARGIN::BI[index]]; }
+int Backend::getRightMargin(int index) { return MARGIN::right[MARGIN::BI[index]]; }
+// ----------------
+
+// centers
+bool Backend::canAlignHCenter(int index)
+{
+    if (!MARGIN::isInitialized) return false;
+	return MARGIN::BI[index] == 0 || MARGIN::BI[index] == 5;
+}
+
+bool Backend::canAlignVCenter(int index)
+{
+    if (!MARGIN::isInitialized) return false;
+    return MARGIN::BI[index] == 2 || MARGIN::BI[index] == 8;
 }

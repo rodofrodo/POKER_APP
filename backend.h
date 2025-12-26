@@ -7,6 +7,7 @@
 #include "general/Utils.h"
 #include "engine/prompt_options.h"
 #include "classes/Player.h"
+#include "engine/margin_calc.h"
 
 class Backend : public QObject
 {
@@ -94,6 +95,21 @@ public:
 	Q_INVOKABLE QString getRightCard(int index);
 	Q_INVOKABLE double getOpacity(int index);
     Q_INVOKABLE QString getSidePotsText(int index);
+
+    // margins
+	// logical checks for alignment options
+	Q_INVOKABLE bool canAlignTop(int index);
+	Q_INVOKABLE bool canAlignBottom(int index);
+	Q_INVOKABLE bool canAlignLeft(int index);
+	Q_INVOKABLE bool canAlignRight(int index);
+	// values for alignment options
+	Q_INVOKABLE int getTopMargin(int index);
+	Q_INVOKABLE int getBottomMargin(int index);
+	Q_INVOKABLE int getLeftMargin(int index);
+	Q_INVOKABLE int getRightMargin(int index);
+    // centers
+	Q_INVOKABLE bool canAlignHCenter(int index);
+	Q_INVOKABLE bool canAlignVCenter(int index);
 
     QString m_ipAddress;
     QString m_port;
