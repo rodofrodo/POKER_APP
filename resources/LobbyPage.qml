@@ -1,12 +1,11 @@
 ﻿import QtQuick
 import QtQuick.Controls
-import QtQuick.Layouts
 
 Page {
     title: "LobbyPage"
 
     property int itemWidth: 250
-    property int itemSpacing: 20
+    property int itemSpacing: 50
     property int maxColumns: 3  // "3 on top"
 
     background: Rectangle {

@@ -7,7 +7,7 @@ Window {
     height: 900
     title: "POKER C++ edition"
     visible: true
-    //visibility: Window.FullScreen
+    visibility: Window.FullScreen
     //visibility: Window.Maximized
 
     // --- F11 FULLSCREEN TOGGLE ---

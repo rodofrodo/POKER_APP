@@ -30,6 +30,7 @@ SettingsManager::SettingsManager(QObject* parent) : QObject(parent)
         m_bgImg = "macao";
 		m_cardBack = "back";
         m_cardDeck = "modern";
+		m_color = "#FF007B";
         qDebug() << "No settings file found. Creating new one with defaults.";
         saveSettings();
     }
@@ -54,6 +55,8 @@ void SettingsManager::loadSettings()
 		m_cardBack = json["cardBack"].toString();
     if (json.contains("cardDeck"))
         m_cardDeck = json["cardDeck"].toString();
+    if (json.contains("color"))
+        m_color = json["color"].toString();
 
     file.close();
 }
@@ -64,6 +67,7 @@ void SettingsManager::saveSettings()
     json["bgImg"] = m_bgImg;
 	json["cardBack"] = m_cardBack;
     json["cardDeck"] = m_cardDeck;
+	json["color"] = m_color;
 
     QJsonDocument doc(json);
     QFile file(m_filePath);
@@ -109,6 +113,17 @@ void SettingsManager::setCardDeck(const QString& deck)
     }
 }
 
+void SettingsManager::setColor(const QString& color)
+{
+    if (m_color != color)
+    {
+        m_color = color;
+        emit colorChanged();
+        saveSettings();
+    }
+}
+
 QString SettingsManager::getBgImg() const { return m_bgImg; }
 QString SettingsManager::getCardBack() const { return m_cardBack; }
 QString SettingsManager::getCardDeck() const { return m_cardDeck; }
+QString SettingsManager::getColor() const { return m_color; }

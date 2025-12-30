@@ -99,11 +99,25 @@ Page {
                     }
                 }
 
-                Text {
-                    text: (backend.uiTrigger, backend.getBalance(index))
-                    font.pixelSize: 16
-                    horizontalAlignment: Text.AlignHCenter
-                    color: (backend.uiTrigger, backend.getTextColor(index))
+                Row {
+                    spacing: 6
+
+                    Text {
+                        text: (backend.uiTrigger, backend.getBalance(index))
+                        font.pixelSize: 16
+                        horizontalAlignment: Text.AlignLeft
+                        anchors.verticalCenter: parent.verticalCenter
+                        color: (backend.uiTrigger, backend.getTextColor(index))
+                    }
+
+                    Text {
+                        text: (backend.uiTrigger, backend.getAvailablePots(index))
+                        font.pixelSize: 12
+                        horizontalAlignment: Text.AlignLeft
+                        anchors.verticalCenter: parent.verticalCenter
+                        color: "#00A150"
+                        font.bold: true
+                    }
                 }
             }
 
@@ -163,6 +177,21 @@ Page {
             color: "#ffffff"
             font.bold: true
         }
+        /*
+        Text {
+            text: "SETTINGS"
+            font.pixelSize: 16
+            horizontalAlignment: Text.AlignHCenter
+            color: "#ffffff"
+
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: {
+                    stackView.push("OptionsPage.qml")
+                }
+            }
+        }*/
     }
 
     Column {
@@ -310,7 +339,7 @@ Page {
         font.pixelSize: 24
         font.bold: true
         horizontalAlignment: Text.AlignHCenter
-        color: "#FF007B"
+        color: AppSettings.color
     }
 
     Row {
@@ -330,56 +359,6 @@ Page {
             backSource: "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
             shown: false
         }
-        /*
-        Image {
-            id: leftCard
-            width: 135
-            height: 178
-            fillMode: Image.PreserveAspectFit 
-
-            Image {
-                id: innerLeftCard
-                anchors.centerIn: parent
-                width: 86
-                height: 134
-                fillMode: Image.PreserveAspectFit 
-            }
-
-            property string fallbackSource: "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
-
-            // 2. Detect when an error occurs
-            onStatusChanged: {
-                if (status === Image.Error) {
-                    console.log("Card not found, loading fallback.")
-                    source = fallbackSource
-                }
-            }
-        }
-
-        Image {
-            id: rightCard
-            width: 135
-            height: 178
-            fillMode: Image.PreserveAspectFit 
-
-            Image {
-                id: innerRightCard
-                anchors.centerIn: parent
-                width: 86
-                height: 134
-                fillMode: Image.PreserveAspectFit 
-            }
-
-            property string fallbackSource: "qrc:/PokerApp/resources/images/cards/" + AppSettings.cardDeck + "/" + AppSettings.cardBack + ".png"
-
-            // 2. Detect when an error occurs
-            onStatusChanged: {
-                if (status === Image.Error) {
-                    console.log("Card not found, loading fallback.")
-                    source = fallbackSource
-                }
-            }
-        }*/
     }
 
     Column {

@@ -3,6 +3,7 @@ import QtQuick.Controls
 
 Page {
     title: "Connect"
+    objectName: "ConnectPage"
 
     background: Rectangle {
         color: "#000000"
@@ -101,7 +102,7 @@ Page {
                     anchors.verticalCenter: parent.verticalCenter
                     leftPadding: 20
                     color: "#ffffff"
-                    placeholderText: "Enter IP Address (e.g. 127.0.0.1)"
+                    placeholderText: "IP address"
                     background: null
                     placeholderTextColor: "#888888"
                     padding: 0
@@ -120,7 +121,7 @@ Page {
                     anchors.verticalCenter: parent.verticalCenter
                     leftPadding: 20
                     color: "#ffffff"
-                    placeholderText: "Enter port (e.g. 8888)"
+                    placeholderText: "Port"
                     background: null
                     placeholderTextColor: "#888888"
                     font.pixelSize: 20

@@ -95,6 +95,7 @@ public:
 	Q_INVOKABLE QString getRightCard(int index);
 	Q_INVOKABLE double getOpacity(int index);
     Q_INVOKABLE QString getSidePotsText(int index);
+    Q_INVOKABLE QString getAvailablePots(int index);
 
     // margins
 	// logical checks for alignment options
@@ -126,6 +127,7 @@ signals:
     void playerListChanged();
     void updatedGamePage();
     void raiseValueChanged();
+	void connectionError(const QString& errorMsg);
 
 private:
     QTcpSocket* m_socket;

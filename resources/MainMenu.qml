@@ -56,6 +56,13 @@ Page {
             anchors.horizontalCenter: parent.horizontalCenter 
             spacing: 24
 
+            Text {
+                id: connectionStatusText
+                anchors.horizontalCenter: parent.horizontalCenter
+                color: "red"
+                font.pixelSize: 16
+            }
+
             Image {
                 // UPDATED SOURCE PATH
                 source: "qrc:/PokerApp/resources/images/white_rect.png" 
@@ -145,6 +152,24 @@ Page {
                     }
                 }
             }
+        }
+    }
+
+    // LISTENER FOR THE SIGNAL
+    Connections {
+        target: backend
+
+        function onConnectionError(message) {
+            if (!stackView.currentItem) return;
+
+            // ONLY pop if we are NOT already on the ConnectPage
+            if (stackView.currentItem.objectName !== "ConnectPage") {
+                console.log("Error occurred. Returning to Connect Page.")
+                stackView.pop(null) // Clears stack and goes back to root (ConnectPage)
+            } else {
+                console.log("Error occurred, but already on Connect Page.")
+            }
+            connectionStatusText.text = "Error: " + message
         }
     }
 }

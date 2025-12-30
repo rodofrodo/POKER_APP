@@ -71,6 +71,8 @@ Backend::Backend(QObject* parent) : QObject(parent), m_socket(new QTcpSocket(thi
             break;
         }
         setStatus("Error: " + errorMsg);
+        hasConnected = false;
+        emit connectionError(errorMsg);
         });
 }
 
@@ -864,9 +866,24 @@ double Backend::getOpacity(int index)
 QString Backend::getSidePotsText(int index)
 {
     if (sidePots.size() == 0) return "";
-    if (index >= sidePots.size()) return "";
     if (index == 0) return "Main pot: ";
 	return "Side pot " + QString::number(index) + ": ";
+}
+
+QString Backend::getAvailablePots(int index)
+{
+    if (sidePots.size() == 0) return "";
+	int enumeration = 0;
+	QString pots = "";
+    for (const auto& v : sidePots)
+    {
+        if (std::find(v.second.begin(), v.second.end(), playerNames[index]) != v.second.end())
+			pots += (enumeration == 0) ? "M," : QString::number(enumeration) + ",";
+		enumeration++;
+    }
+	if (pots.endsWith(","))
+		pots.chop(1);
+	return pots;
 }
 
 // margins

@@ -11,6 +11,7 @@ Q_OBJECT
 Q_PROPERTY(QString bgImg READ getBgImg WRITE setBgImg NOTIFY bgImgChanged)
 Q_PROPERTY(QString cardBack READ getCardBack WRITE setCardBack NOTIFY cardBackChanged)
 Q_PROPERTY(QString cardDeck READ getCardDeck WRITE setCardDeck NOTIFY cardDeckChanged)
+Q_PROPERTY(QString color READ getColor WRITE setColor NOTIFY colorChanged)
 
 public:
 	explicit SettingsManager(QObject* parent = nullptr);
@@ -19,11 +20,13 @@ public:
 	QString getBgImg() const;
 	QString getCardBack() const;
 	QString getCardDeck() const;
+	QString getColor() const;
 
 	// setters
 	Q_INVOKABLE void setBgImg(const QString& img);
 	Q_INVOKABLE void setCardBack(const QString& back);
 	Q_INVOKABLE void setCardDeck(const QString& deck);
+	Q_INVOKABLE void setColor(const QString& color);
 
 	// file operations
 	void loadSettings();
@@ -33,12 +36,14 @@ signals:
 	void bgImgChanged();
 	void cardBackChanged();
 	void cardDeckChanged();
+	void colorChanged();
 
 private:
 	QString m_filePath;
 	QString m_bgImg;
 	QString m_cardBack;
 	QString m_cardDeck;
+	QString m_color;
 };
 
 #endif

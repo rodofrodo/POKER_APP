@@ -19,7 +19,8 @@ if(MSVC)
 endif()
 
 # 1. Define the executable target FIRST.
-qt_add_executable(POKER_APP 
+# TODO: add WIN32 after POKER_APP to hide console on Windows
+qt_add_executable(POKER_APP WIN32
     main.cpp
     backend.h
     backend.cpp
@@ -58,6 +59,7 @@ qt_add_qml_module(POKER_APP # <-- This target reference is now known
         resources/images/board_classic.svg
         resources/images/gray_rect.png
         resources/images/main_menu_logo.svg
+        resources/images/opt_white_small_rect.svg
         resources/images/person_40.png
         resources/images/side_logo.svg
         resources/images/small_gray_rect.png
@@ -66,6 +68,10 @@ qt_add_qml_module(POKER_APP # <-- This target reference is now known
         resources/images/white_polygon_down_16.svg
         resources/images/white_rect.png
         resources/images/white_small_button_rect.svg
+        # Credits images
+        resources/images/credits/buymeacoffee.png
+        resources/images/credits/github.png
+        resources/images/credits/ko-fi.png
         # Player action images
         resources/images/players/acts_rect.svg
         resources/images/players/all_in_rect.svg
@@ -298,7 +304,13 @@ qt_add_qml_module(POKER_APP # <-- This target reference is now known
         # Boards
         resources/images/boards/board_lukewarm.svg
         resources/images/boards/board_macao.svg
+        resources/images/boards/board_classic.svg
         resources/images/boards/board_wine.svg
+        # Board colors
+        resources/images/board_colors/lukewarm.svg
+        resources/images/board_colors/macao.svg
+        resources/images/board_colors/classic.svg
+        resources/images/board_colors/wine.svg
 )
 
 # 3. Link libraries (using the known target name).
