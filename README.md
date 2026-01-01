@@ -27,9 +27,9 @@
 [![Visual Studio Code](https://custom-icon-badges.demolab.com/badge/Visual%20Studio%20Code-0078d7.svg?logo=vsc&logoColor=white)](#)
 
 [![GitHub](https://img.shields.io/badge/rodofrodo-black?style=for-the-badge&logo=github&logoColor=white&link=https%3A%2F%2Fgithub.com%2Frodofrodo
-)](#)
-[![BMAC](https://img.shields.io/badge/Buy%20me%20a%20coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black&link=https%3A%2F%2Fbuymeacoffee.com%2Fnkbdev)](#)
-[![KOFI](https://img.shields.io/badge/KO--FI-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white&link=https%3A%2F%2Fko-fi.com%2Frodofrodo)](#)
+)]
+[![BMAC](https://img.shields.io/badge/Buy%20me%20a%20coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black&link=https%3A%2F%2Fbuymeacoffee.com%2Fnkbdev)]
+[![KOFI](https://img.shields.io/badge/KO--FI-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white&link=https%3A%2F%2Fko-fi.com%2Frodofrodo)]
 
 ## About
 
