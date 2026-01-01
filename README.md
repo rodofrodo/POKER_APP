@@ -31,11 +31,48 @@
 [![BMAC](https://img.shields.io/badge/Buy%20me%20a%20coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black&link=https%3A%2F%2Fbuymeacoffee.com%2Fnkbdev)](https://buymeacoffee.com/nkbdev)
 [![KOFI](https://img.shields.io/badge/KO--FI-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white&link=https%3A%2F%2Fko-fi.com%2Frodofrodo)](https://ko-fi.com/rodofrodo)
 
-## About
+## 📜 About
 
+A modern, multiplayer Texas Hold'em Poker game built with **C++** and **Qt Quick (QML)**. Features real-time LAN networking, 3D card animations, and a dynamic 10-player table.
 
+## ✨ Features
+### 🎮 Gameplay
+* **Local Multiplayer:** Host games on your local network (LAN) with auto-discovery support.
+* **Dynamic Seating:** Table automatically rotates so you are always seated at the bottom center.
+* **Flexible Lobby:** Supports 3 to 10 players with responsive layout algorithms.
+* **Tutorial Mode:** Interactive, overlay gallery teaching the basics of Poker for first-time players.
 
-## Features
+### 🎨 UI & UX
+* **3D Animations:** Smooth 3D card flipping.
+* **Fluid Transitions:** Cross-fading avatars and backgrounds.
+* **Responsive Design:** Fullscreen support with adaptive anchors for any resolution.
 
+### 🛠 Under the Hood
+* **Backend:** High-performance C++ backend handling game logic and state.
+* **Networking:** Asynchronous TCP socket management using `QTcpSocket` / Boost.Asio.
+* **Settings Persistence:** Remembers player preferences and tutorial status via `QSettings`.
+* **Security:** Native Windows executable with `WIN32` subsystem (no console window).
+
+---
+
+## 🎓 Tutorial
+
+<img width="1064" height="715" alt="tut1" src="https://github.com/user-attachments/assets/b4beb0df-e783-4d41-801d-0d6974308335" />
+<img width="1064" height="715" alt="tut2" src="https://github.com/user-attachments/assets/b9a24abd-0e1f-438e-9fc0-302be2842318" />
+<img width="1064" height="715" alt="tut3" src="https://github.com/user-attachments/assets/891245e2-9024-4140-bcf1-ee1bca802594" />
+<img width="1064" height="715" alt="tut4" src="https://github.com/user-attachments/assets/5f55d97a-d370-4604-aba0-c4c74d4178c0" />
+<img width="1064" height="715" alt="tut5" src="https://github.com/user-attachments/assets/25343419-2611-4c00-8460-d8ce49fb5ff7" />
+<img width="1064" height="715" alt="tut6" src="https://github.com/user-attachments/assets/a6b0dfb4-b02c-4638-88e7-f72678e525e3" />
+<img width="1064" height="715" alt="tut7" src="https://github.com/user-attachments/assets/ed28e261-60ad-4e4b-8c73-612dcfbd1e01" />
+<img width="1064" height="715" alt="tut8" src="https://github.com/user-attachments/assets/5eb6a080-545d-431d-816f-4fce23d79da4" />
+<img width="1064" height="715" alt="tut9" src="https://github.com/user-attachments/assets/07e6e464-6131-4566-a095-48642eb8b676" />
+<img width="1064" height="715" alt="tut10" src="https://github.com/user-attachments/assets/75da86a0-a75f-4818-9dbe-c912e8335f7f" />
+<img width="1064" height="715" alt="tut11" src="https://github.com/user-attachments/assets/4ba65eec-0723-4240-a41b-f5d005c445c0" />
+<img width="1064" height="715" alt="tut12" src="https://github.com/user-attachments/assets/dfb67226-1674-43f6-a7d3-dea7602ea57f" />
+<img width="1064" height="715" alt="tut13" src="https://github.com/user-attachments/assets/5e73365e-9582-47b8-93b2-3c20af7e9edf" />
+<img width="1064" height="715" alt="tut14" src="https://github.com/user-attachments/assets/d57efb1b-635b-446e-afc6-d166fea82910" />
+<img width="1064" height="715" alt="tut15" src="https://github.com/user-attachments/assets/ee137916-9e76-41f7-b19f-c0d714500335" />
+<img width="1064" height="715" alt="tut16" src="https://github.com/user-attachments/assets/b945d9eb-d0bd-48e8-a62d-1ffc02ee8b65" />
+<img width="1064" height="715" alt="tut17" src="https://github.com/user-attachments/assets/0d4395e5-3a42-41c1-92e6-d916c84ae07c" />
 
 ## What I learned
