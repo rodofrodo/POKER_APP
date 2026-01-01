@@ -51,6 +51,7 @@ qt_add_qml_module(POKER_APP # <-- This target reference is now known
         resources/LobbyPage.qml
         resources/OptionsPage.qml
         resources/SignUpPage.qml
+        resources/TutorialPopup.qml
         # Normal images
         resources/images/back_arrow_32.png
         resources/images/back_arrow_hover_32.png
@@ -311,6 +312,24 @@ qt_add_qml_module(POKER_APP # <-- This target reference is now known
         resources/images/board_colors/macao.svg
         resources/images/board_colors/classic.svg
         resources/images/board_colors/wine.svg
+        # Tutorial
+        resources/images/tutorial/tut1.png
+        resources/images/tutorial/tut2.png
+        resources/images/tutorial/tut3.png
+        resources/images/tutorial/tut4.png
+        resources/images/tutorial/tut5.png
+        resources/images/tutorial/tut6.png
+        resources/images/tutorial/tut7.png
+        resources/images/tutorial/tut8.png
+        resources/images/tutorial/tut9.png
+        resources/images/tutorial/tut10.png
+        resources/images/tutorial/tut11.png
+        resources/images/tutorial/tut12.png
+        resources/images/tutorial/tut13.png
+        resources/images/tutorial/tut14.png
+        resources/images/tutorial/tut15.png
+        resources/images/tutorial/tut16.png
+        resources/images/tutorial/tut17.png
 )
 
 # 3. Link libraries (using the known target name).

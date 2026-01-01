@@ -51,7 +51,7 @@ Page {
 
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: qsTr("Type in your nickname")
+                text: qsTr("Enter your nickname")
                 font.pixelSize: 32
                 horizontalAlignment: Text.AlignHCenter
                 font.bold: true
@@ -61,7 +61,7 @@ Page {
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: qsTr(
-                          "We need to know how to address you in case\nof a phenomenal victory!")
+                          "We need to know who to congratulate when you win big!")
                 font.pixelSize: 20
                 horizontalAlignment: Text.AlignHCenter
                 color: "#ffffff"

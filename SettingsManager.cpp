@@ -31,6 +31,7 @@ SettingsManager::SettingsManager(QObject* parent) : QObject(parent)
 		m_cardBack = "back";
         m_cardDeck = "modern";
 		m_color = "#FF007B";
+		m_hasSeenTutorial = false;
         qDebug() << "No settings file found. Creating new one with defaults.";
         saveSettings();
     }
@@ -57,6 +58,8 @@ void SettingsManager::loadSettings()
         m_cardDeck = json["cardDeck"].toString();
     if (json.contains("color"))
         m_color = json["color"].toString();
+    if (json.contains("hasSeenTutorial"))
+		m_hasSeenTutorial = json["hasSeenTutorial"].toBool();
 
     file.close();
 }
@@ -68,6 +71,7 @@ void SettingsManager::saveSettings()
 	json["cardBack"] = m_cardBack;
     json["cardDeck"] = m_cardDeck;
 	json["color"] = m_color;
+	json["hasSeenTutorial"] = m_hasSeenTutorial;
 
     QJsonDocument doc(json);
     QFile file(m_filePath);
@@ -123,7 +127,18 @@ void SettingsManager::setColor(const QString& color)
     }
 }
 
+void SettingsManager::setHasSeenTutorial(bool seen)
+{
+    if (m_hasSeenTutorial != seen)
+    {
+        m_hasSeenTutorial = seen;
+        emit hasSeenTutorialChanged();
+        saveSettings();
+    }
+}
+
 QString SettingsManager::getBgImg() const { return m_bgImg; }
 QString SettingsManager::getCardBack() const { return m_cardBack; }
 QString SettingsManager::getCardDeck() const { return m_cardDeck; }
 QString SettingsManager::getColor() const { return m_color; }
+bool SettingsManager::getHasSeenTutorial() const { return m_hasSeenTutorial; }

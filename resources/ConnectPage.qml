@@ -70,7 +70,7 @@ Page {
 
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: qsTr("Connect to a server")
+                text: qsTr("Connect to Server")
                 font.pixelSize: 32
                 horizontalAlignment: Text.AlignHCenter
                 font.bold: true
@@ -80,7 +80,7 @@ Page {
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: qsTr(
-                          "In order to play Poker, you need to connect to\na dedicated LAN server.")
+                          "To play, you must connect to a dedicated LAN server.")
                 font.pixelSize: 20
                 horizontalAlignment: Text.AlignHCenter
                 color: "#ffffff"

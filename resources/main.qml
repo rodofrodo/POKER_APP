@@ -10,6 +10,13 @@ Window {
     visibility: Window.FullScreen
     //visibility: Window.Maximized
 
+    Component.onCompleted: {
+        // Check if the "settingsManager" (exposed from C++) says we've seen it
+        if (!AppSettings.hasSeenTutorial) {
+            tutorialOverlay.open()
+        }
+    }
+
     // --- F11 FULLSCREEN TOGGLE ---
     Shortcut {
         sequence: "F11"
@@ -26,5 +33,15 @@ Window {
         id: stackView
         anchors.fill: parent
         initialItem: "MainMenu.qml"
+    }
+
+    // --- TUTORIAL OVERLAY (Sits on top) ---
+    TutorialPopup {
+        id: tutorialOverlay
+
+        // 2. When finished, save the setting so it never shows again
+        onFinished: {
+            AppSettings.setHasSeenTutorial(true)
+        }
     }
 }

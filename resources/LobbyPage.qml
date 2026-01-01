@@ -150,10 +150,10 @@ Page {
 
         Text {
             anchors.centerIn: parent
-            text: "Waiting for host to start"
+            text: "Waiting for the host to start the game"
             font.italic: true
             color: "#ffffff"
-            font.pixelSize: 16
+            font.pixelSize: 14
         }
     }
 

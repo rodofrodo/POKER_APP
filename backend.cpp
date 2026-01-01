@@ -866,8 +866,8 @@ double Backend::getOpacity(int index)
 QString Backend::getSidePotsText(int index)
 {
     if (sidePots.size() == 0) return "";
-    if (index == 0) return "Main pot: ";
-	return "Side pot " + QString::number(index) + ": ";
+    if (index == 0) return "Main Pot: ";
+	return "Side Pot " + QString::number(index) + ": ";
 }
 
 QString Backend::getAvailablePots(int index)
