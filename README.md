@@ -35,7 +35,7 @@
 
 Poker C++ Edition is a high-performance, cross-platform implementation of Texas Hold'em designed to bridge the gap between robust systems programming and modern, fluid user interfaces.
 
-Built from the ground up using Modern C++ (C++20) for the backend and Qt Quick (QML) for the frontend, this project demonstrates how to create a complex, state-driven multiplayer game without relying on heavy game engines like Unity or Unreal.
+Built from the ground up using **Modern C++** (C++20) for the backend and **Qt Quick** (QML) for the frontend, this project demonstrates how to create a complex, state-driven multiplayer game without relying on heavy game engines like Unity or Unreal.
 
 The architecture strictly separates the Game Logic (Backend) from the Presentation Layer (Frontend). The C++ core handles deck management, hand evaluation, pot calculation, and socket networking asynchronously, ensuring the UI remains buttery smooth at 60 FPS even during complex animations.
 
@@ -61,6 +61,17 @@ Whether you want to host a private LAN party with friends with no internet depen
 
 ---
 
+## 📥 External files
+You don't need to be a programmer to play! I provide ready-to-use binaries for Windows. The server is written entirely in C++ and utilizes Boost.Asio library.
+It is the heart of the project: it handles all game calculations and facilitates communication between the clients and the host.
+
+### 💿 Where to download
+You can find the standalone portable version (`.zip`) in the Releases section of the POKER Console Server repository.
+
+👉 [Click here to download the latest version](https://github.com/rodofrodo/POKER-Console-Server).
+
+---
+
 ## 🧠 What I learned
 Building this project was a deep dive into full-stack desktop application development. Here are the key technical takeaways:
 
@@ -83,47 +94,86 @@ and configuring CMake to package the app into a distributable Windows executable
 
 1. Since I know many people don’t know how to play poker, I created a tutorial covering the essentials. Some parts might seem confusing at first, but it will all become clear once you start playing.
 <img width="1064" height="715" alt="tut1" src="https://github.com/user-attachments/assets/b4beb0df-e783-4d41-801d-0d6974308335" />
+
 2. My task was to create a C++ project, but don't be misled by the amount of QML code. That's just the frontend! It's similar to building a website—HTML and CSS aren't programming languages, but they are needed to bring the JavaScript to life.
 <img width="1064" height="715" alt="tut2" src="https://github.com/user-attachments/assets/b9a24abd-0e1f-438e-9fc0-302be2842318" />
+
 3. As I mentioned earlier, there is no single-player mode.
 <img width="1064" height="715" alt="tut3" src="https://github.com/user-attachments/assets/891245e2-9024-4140-bcf1-ee1bca802594" />
-4. So this part is important, as you all need to be on the same network. TODO: POKER Console Server |<br/>
-Basically, you can choose IPv4, IPv6, or DualStack, and the server will tell you all available IP addresses.<br/>
 
-Private IPv4 addresses:
+4. This step is **crucial**: everyone must be on the same network.
+You can download the server [here](https://github.com/rodofrodo/POKER-Console-Server).
+
+You may choose **IPv4, IPv6, or DualStack**; the server will display all available IP addresses based on your choice.
+
+**Private IPv4 addresses**:
 * 10.0.0.0 – 10.255.255.255
 * 172.16.0.0 – 172.31.255.255
 * 192.168.0.0 – 192.168.255.255
 
-Private IPv6 addresses:
+**Private IPv6 addresses**:
 * fc00::/7
 * fd00::/8
 
-Best practice: use DualStack
+**Recommendation**: Use DualStack
+
 <img width="1064" height="715" alt="tut4" src="https://github.com/user-attachments/assets/5f55d97a-d370-4604-aba0-c4c74d4178c0" />
-5. xd
+
+5. There have been moments in the history of competitive poker where people folded because their opponent went all-in. They thought they were beaten, but the opponent actually had a terrible hand—meaning a player with two pair could have won the entire pot!
 <img width="1064" height="715" alt="tut5" src="https://github.com/user-attachments/assets/25343419-2611-4c00-8460-d8ce49fb5ff7" />
-6. xd
+
+6. I hope this is clear.
 <img width="1064" height="715" alt="tut6" src="https://github.com/user-attachments/assets/a6b0dfb4-b02c-4638-88e7-f72678e525e3" />
-7. xd
+
+7. I know this might be more visible in other games, but it happens in this Poker Game, too. It occurs during the dealing phase: as the game initializes, the Small Blind and Big Blind place their forced bets. In every round, the dealer button moves clockwise, ensuring that eventually, every player will take a turn as the Small Blind or Big Blind.
 <img width="1064" height="715" alt="tut7" src="https://github.com/user-attachments/assets/ed28e261-60ad-4e4b-8c73-612dcfbd1e01" />
-8. zs
+
+8. Every round begins with the player to the left of the dealer. However, since the Blinds have already posted their forced bets, the player to the left of the Big Blind acts first.
 <img width="1064" height="715" alt="tut8" src="https://github.com/user-attachments/assets/5eb6a080-545d-431d-816f-4fce23d79da4" />
-9. xd
+
+9. In subsequent betting rounds, the action starts with the first active player to the dealer's left—usually the Small Blind. However, if they have already folded or are all-in, the turn passes to the next active player.
+
+When a new betting round begins, the algorithm is called to determine the starting player. It begins by checking if the Small Blind is eligible to act; if not, it continues checking each subsequent player until it finds one who can.
+```cpp
+int attempts = 0;
+int maxAttempts = playerNames.size();
+
+do
+{
+    currentPlayer = (currentPlayer + 1) % playerNames.size();
+    QString name = playerNames[currentPlayer];
+    bool isFolded = playerMap[name].hasFolded;
+    bool isAllIn = playerMap[name].currentBet.isAllIn;
+    if (!isFolded && !isAllIn)
+        return;
+    attempts++;
+} while (attempts < maxAttempts);
+```
+
 <img width="1064" height="715" alt="tut9" src="https://github.com/user-attachments/assets/07e6e464-6131-4566-a095-48642eb8b676" />
-10. xd
+
+10. This process is identical for the Turn.
 <img width="1064" height="715" alt="tut10" src="https://github.com/user-attachments/assets/75da86a0-a75f-4818-9dbe-c912e8335f7f" />
-11. xd
+
+11. It is also the same for the River.
 <img width="1064" height="715" alt="tut11" src="https://github.com/user-attachments/assets/4ba65eec-0723-4240-a41b-f5d005c445c0" />
-12. xd
+
+12. Showdown is always exciting! Well, if you win the hand, of course. Sometimes I haven't even realized why I won; I thought I had terrible cards, only to discover I actually had a straight or a flush! Remember that in a straight, an Ace can count as high (14) or low (1). This means a low straight (A-2-3-4-5) is possible—so be careful when betting!
 <img width="1064" height="715" alt="tut12" src="https://github.com/user-attachments/assets/dfb67226-1674-43f6-a7d3-dea7602ea57f" />
-13. xd
+
+13. I sourced the poker hand rankings from [English Wikipedia](https://en.wikipedia.org/wiki/List_of_poker_hands) and the probabilities from [German Wikipedia](https://de.wikipedia.org/wiki/Hand_(Poker)).
 <img width="1064" height="715" alt="tut13" src="https://github.com/user-attachments/assets/5e73365e-9582-47b8-93b2-3c20af7e9edf" />
-14. xd
+
+14. If you place a large bet, other players may fold to avoid losing money. You win the pot without showing your cards. Personally, I would cry if I saw the opponent's cards later and found out he was bluffing!
 <img width="1064" height="715" alt="tut14" src="https://github.com/user-attachments/assets/d57efb1b-635b-446e-afc6-d166fea82910" />
-15. xd
+
+15. Split pots are rare, especially those that result in an odd chip, but I implemented the logic just in case. Also, when multiple players go all-in, it might look like a tie, but it isn't. Instead, players only win from the pots they contributed to (Main Pot and Side Pots).
 <img width="1064" height="715" alt="tut15" src="https://github.com/user-attachments/assets/ee137916-9e76-41f7-b19f-c0d714500335" />
-16. xd
+
+16. Side pots are actually created during the betting rounds. If a player goes all-in but has fewer chips than the current high bet, their potential winnings are capped—they can only win what they have wagered.
+
+In real-life poker, players reveal their hands, and the dealer slowly reveals the remaining cards. Here, it happens immediately.
 <img width="1064" height="715" alt="tut16" src="https://github.com/user-attachments/assets/b945d9eb-d0bd-48e8-a62d-1ffc02ee8b65" />
-17. xd
+
+17. Good luck and have fun! Warning: **satisfaction is _guaranteed!_** 😁
 <img width="1064" height="715" alt="tut17" src="https://github.com/user-attachments/assets/0d4395e5-3a42-41c1-92e6-d916c84ae07c" />
