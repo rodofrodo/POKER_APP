@@ -8,6 +8,7 @@
 #include "enums/GameEnums.h"
 #include <format>
 
+const QString NAME_REGISTER_PREFIX = "NameRegister";
 const QString INFO_MSG_PREFIX = "Connected";
 const QString LENGTH_MSG_PREFIX = "Length";
 const QString BROADCAST_MSG_PREFIX = "Broadcast";
@@ -79,6 +80,7 @@ Backend::Backend(QObject* parent) : QObject(parent), m_socket(new QTcpSocket(thi
 QString Backend::statusMessage() const { return m_status; }
 QString Backend::getIpAddress() const { return m_ipAddress; }
 QString Backend::getPort() const { return m_port; }
+QString Backend::nameProblem() const { return m_nameProblem; }
 QString Backend::getName() const { return m_clientName; }
 QString Backend::getLobbySize() const { return QString::number(playerInLobby); }
 QStringList Backend::getPlayerList() const { return m_playerList; }
@@ -217,6 +219,15 @@ void Backend::setStatus(const QString& msg)
     }
 }
 
+void Backend::setNameProblem(const QString& msg)
+{
+    if (m_nameProblem != msg)
+    {
+        m_nameProblem = msg;
+        emit nameProblemTriggered();
+    }
+}
+
 void Backend::sendMessage(const QString& msg)
 {
     if (m_socket->state() == QAbstractSocket::ConnectedState)
@@ -246,7 +257,22 @@ void Backend::onReadyRead()
 
 void Backend::processBuffer(const QString& msg)
 {
-    if (msg.startsWith(LENGTH_MSG_PREFIX))
+    if (msg.startsWith(NAME_REGISTER_PREFIX))
+    {
+        QStringList parts = msg.split("&");
+        if (parts.size() == 2)
+        {
+			int val = parts[1].toInt();
+            if (val == 1)
+				sendMessage("len\n");
+            if (val == 0)
+            {
+                setNameProblem("Name already taken. Please choose another.");
+                m_clientName.clear();
+            }
+        }
+    }
+	else if (msg.startsWith(LENGTH_MSG_PREFIX))
     {
         QStringList parts = msg.split("&");
         if (parts.size() == 3)

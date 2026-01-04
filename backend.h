@@ -16,6 +16,7 @@ Q_OBJECT
 Q_PROPERTY(QString statusMessage READ statusMessage NOTIFY statusChanged)
 Q_PROPERTY(QString ipAddress READ getIpAddress NOTIFY connectionDetailsChanged)
 Q_PROPERTY(QString port READ getPort NOTIFY connectionDetailsChanged)
+Q_PROPERTY(QString nameProblem READ nameProblem NOTIFY nameProblemTriggered)
 Q_PROPERTY(QString clientName READ getName NOTIFY updatedName)
 Q_PROPERTY(QString lobbySize READ getLobbySize NOTIFY updatedLobbySize)
 Q_PROPERTY(QStringList playerList READ getPlayerList NOTIFY playerListChanged)
@@ -45,6 +46,7 @@ public:
     QString statusMessage() const;
     QString getIpAddress() const;
     QString getPort() const;
+	QString nameProblem() const;
     QString getName() const;
     QString getLobbySize() const;
     QStringList getPlayerList() const;
@@ -121,6 +123,7 @@ signals:
     void connectedToServer();
     void lobbyReady();
     void connectionDetailsChanged();
+	void nameProblemTriggered();
     void updatedName();
     void updatedLobbySize();
     void gameReady();
@@ -132,6 +135,7 @@ signals:
 private:
     QTcpSocket* m_socket;
     QString m_status;
+	QString m_nameProblem;
     bool hasConnected = false;
     QStringList m_playerList;
     QString m_buffer;
@@ -145,6 +149,7 @@ private:
     bool gotPlayerCards;
 
     void setStatus(const QString& msg);
+	void setNameProblem(const QString& msg);
 	void sendMessage(const QString& msg);
 	void onReadyRead();
     void processBuffer(const QString& msg);

@@ -94,6 +94,7 @@ Page {
         Column {
             id: connectColumn
             anchors.horizontalCenter: parent.horizontalCenter
+            spacing: 40
 
             Image {
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -118,12 +119,25 @@ Page {
                     cursorShape: Qt.PointingHandCursor
 
                     onClicked: {
-                        backend.sendMessage_public("name&" + nickInput.text + "\n")
-                        backend.sendMessage_public("len\n")
-                        backend.updateName(nickInput.text)
+                        var cleanNick = nickInput.text.trim()
+                        if (cleanNick.length === 0) {
+                            console.log("Nickname cannot be empty.")
+                            return
+                        }
+                        backend.sendMessage_public("name&" + cleanNick + "\n")
+                        backend.updateName(cleanNick)
                     }
                 }
             }
+        }
+
+        Label {
+            text: backend.nameProblem
+            color: "#ffffff"
+            width: parent.width
+            wrapMode: Text.WordWrap
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 20
         }
     }
     
