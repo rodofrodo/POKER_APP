@@ -41,6 +41,8 @@ The architecture strictly separates the Game Logic (Backend) from the Presentati
 
 Whether you want to host a private LAN party with friends with no internet dependency or explore how to integrate raw TCP sockets with a reactive QML interface, this project serves as both a fully playable game and a comprehensive reference implementation.
 
+---
+
 ## ✨ Features
 ### 🎮 Gameplay
 * **Local Multiplayer:** Host games on your local network (LAN) with auto-discovery support.
