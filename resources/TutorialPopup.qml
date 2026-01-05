@@ -93,36 +93,49 @@ Item {
         // --- CONTROLS ---
 
         // Left Arrow button
-        Button {
+        Image {
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
             anchors.leftMargin: 20
-            text: "<"
-            font.pixelSize: 30
+            source: la_ma.containsMouse
+                ? "qrc:/PokerApp/resources/images/tutorial/cyan_polygon_left_arrow_48.svg"
+                : "qrc:/PokerApp/resources/images/tutorial/white_polygon_left_arrow_48.svg"
+
             // Hide if on the first image
             visible: dialogBox.currentIndex > 0
-            onClicked: dialogBox.currentIndex--
+            MouseArea {
+                id: la_ma
+                anchors.fill: parent
+                hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
+                onClicked: dialogBox.currentIndex--
+            }
         }
 
         // Right Arrow / Finish button
-        Button {
+        Image {
             id: nextBtn
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
             anchors.rightMargin: 20
-            font.pixelSize: 30
-            
-            // Change text and behavior on the last slide
-            text: dialogBox.currentIndex === dialogBox.tutorialImages.length - 1 ? "Finish" : ">"
-            
-            onClicked: {
-                if (dialogBox.currentIndex < dialogBox.tutorialImages.length - 1) {
-                    // Normal next behavior
-                    dialogBox.currentIndex++
-                } else {
-                    // Finish behavior
-                    root.close()
-                    root.finished()
+            source: ra_ma.containsMouse
+                ? "qrc:/PokerApp/resources/images/tutorial/cyan_polygon_right_arrow_48.svg"
+                : "qrc:/PokerApp/resources/images/tutorial/white_polygon_right_arrow_48.svg"
+
+            MouseArea {
+                id: ra_ma
+                anchors.fill: parent
+                hoverEnabled: true
+                cursorShape: Qt.PointingHandCursor
+                onClicked: {
+                    if (dialogBox.currentIndex < dialogBox.tutorialImages.length - 1) {
+                        // Normal next behavior
+                        dialogBox.currentIndex++
+                    } else {
+                        // Finish behavior
+                        root.close()
+                        root.finished()
+                    }
                 }
             }
         }

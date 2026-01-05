@@ -330,6 +330,10 @@ qt_add_qml_module(POKER_APP # <-- This target reference is now known
         resources/images/tutorial/tut15.png
         resources/images/tutorial/tut16.png
         resources/images/tutorial/tut17.png
+        resources/images/tutorial/white_polygon_left_arrow_48.svg
+        resources/images/tutorial/white_polygon_right_arrow_48.svg
+        resources/images/tutorial/cyan_polygon_left_arrow_48.svg
+        resources/images/tutorial/cyan_polygon_right_arrow_48.svg
 )
 
 # 3. Link libraries (using the known target name).
