@@ -18,15 +18,15 @@ Window {
     }
 
     // --- F11 FULLSCREEN TOGGLE ---
-    Shortcut {
-        sequence: "F11"
-        onActivated: {
-            if (root.visibility === Window.FullScreen)
-                root.visibility = Window.Windowed
-            else
-                root.visibility = Window.FullScreen
-        }
-    }
+    //Shortcut {
+    //    sequence: "F11"
+    //    onActivated: {
+    //        if (root.visibility === Window.FullScreen)
+    //            root.visibility = Window.Windowed
+    //        else
+    //            root.visibility = Window.FullScreen
+    //    }
+    //}
 
     // StackView manages navigation between pages (push/pop)
     StackView {
