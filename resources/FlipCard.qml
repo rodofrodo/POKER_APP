@@ -45,7 +45,7 @@ Item {
             source: root.frontSource
             fillMode: Image.PreserveAspectFit
             visible: false
-            // mirror is super important
+            // mirror is super important here
             mirror: true 
 
             Image {

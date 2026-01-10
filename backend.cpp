@@ -144,30 +144,6 @@ QString Backend::getTopbetValue() const
     return "$" + QString::number(topbet.value / 100.0, 'f', 2);
 }
 
-QString Backend::getWinners() const
-{
-    QString qsl;
-    if (currentGameState == GameState::GAME_OVER)
-        qsl.append("The winner is " + globalDefaultWinner);
-    else if (currentGameState == GameState::SHOWDOWN)
-    {
-        if (globalWinningCards.size() > 1 && globalWinningType == "normal")
-        {
-            qsl.append("\n--- IT'S A TIE! ---\n");
-            qsl.append(globalWinningCards.size() + " players have the same winning hand!\n\n");
-        }
-        else if (globalWinningType == "sidepot")
-        {
-            qsl.append("\n--- DISTRIBUTION OF SIDEPOTS ---\n");
-            qsl.append(globalWinningCards.size() + " sidepots are distributed.\n\n");
-        }
-        for (size_t i = 0; i < globalWinningCards.size(); i++)
-            qsl.append(globalWinningMsg[i] + "\n");
-    }
-    else qsl.append("");
-    return qsl;
-}
-
 int Backend::getUiTrigger() const { return m_uiTrigger; }
 
 QStringList Backend::getSidePots() const
@@ -186,7 +162,7 @@ double Backend::getRaiseUpOpacity() const
     TUPLE::MinMax res = prompt::getDifferentBetOptions(topbet, playerMap[m_clientName]);
     if (m_raiseVal < res.max)
         return 1.0;
-    return .5;
+    return .5; // if cannot be clicked
 }
 
 double Backend::getRaiseDownOpacity() const
@@ -195,7 +171,7 @@ double Backend::getRaiseDownOpacity() const
     TUPLE::MinMax res = prompt::getDifferentBetOptions(topbet, playerMap[m_clientName]);
     if (m_raiseVal > res.min)
         return 1.0;
-    return .5;
+    return .5; // if cannot be clicked
 }
 
 QString Backend::getRaiseUpText() const
@@ -896,7 +872,7 @@ double Backend::getOpacity(int index)
 {
     if (playerMap.size() == 0) return 1.0;
     if (playerMap[playerNames[index]].hasFolded)
-        return .5;
+        return .5; // folded players shouldn't be too visible
     return 1.0;
 }
 

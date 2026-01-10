@@ -27,6 +27,7 @@ SettingsManager::SettingsManager(QObject* parent) : QObject(parent)
     }
     else
     {
+        // defaults
         m_bgImg = "macao";
 		m_cardBack = "back";
         m_cardDeck = "modern";
@@ -50,6 +51,7 @@ void SettingsManager::loadSettings()
     QJsonDocument doc = QJsonDocument::fromJson(data);
     QJsonObject json = doc.object();
 
+    // settings the values from JSON
     if (json.contains("bgImg"))
         m_bgImg = json["bgImg"].toString();
     if (json.contains("cardBack"))
@@ -87,6 +89,7 @@ void SettingsManager::saveSettings()
     }
 }
 
+// setters
 void SettingsManager::setBgImg(const QString& img)
 {
     if (m_bgImg != img)
@@ -137,6 +140,7 @@ void SettingsManager::setHasSeenTutorial(bool seen)
     }
 }
 
+// getters
 QString SettingsManager::getBgImg() const { return m_bgImg; }
 QString SettingsManager::getCardBack() const { return m_cardBack; }
 QString SettingsManager::getCardDeck() const { return m_cardDeck; }

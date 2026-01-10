@@ -15,6 +15,9 @@ Q_PROPERTY(QString color READ getColor WRITE setColor NOTIFY colorChanged)
 Q_PROPERTY(bool hasSeenTutorial READ getHasSeenTutorial WRITE setHasSeenTutorial NOTIFY hasSeenTutorialChanged)
 
 public:
+	/// <summary>
+	/// The special constructor designed for a QObject
+	/// </summary>
 	explicit SettingsManager(QObject* parent = nullptr);
 
 	// getters
