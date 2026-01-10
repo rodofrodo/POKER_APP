@@ -32,7 +32,6 @@ Q_PROPERTY(QString potVal READ getPotValue NOTIFY updatedGamePage)
 Q_PROPERTY(QStringList comCards READ getCommunityCards NOTIFY updatedGamePage)
 Q_PROPERTY(QStringList betOpts READ getBetOpts NOTIFY updatedGamePage)
 Q_PROPERTY(QString topbetVal READ getTopbetValue NOTIFY updatedGamePage)
-Q_PROPERTY(QString winners READ getWinners NOTIFY updatedGamePage)
 Q_PROPERTY(int uiTrigger READ getUiTrigger NOTIFY updatedGamePage)
 Q_PROPERTY(QStringList sidePots READ getSidePots NOTIFY updatedGamePage)
 
@@ -412,7 +411,6 @@ public:
     QString m_port;
     QString m_clientName;
 
-#pragma region Signals (I'd call it triggerers)
 signals:
     void statusChanged();
     void connectedToServer();
@@ -426,7 +424,6 @@ signals:
     void updatedGamePage();
     void raiseValueChanged();
 	void connectionError(const QString& errorMsg);
-#pragma endregion
 
 private:
 	// private members
