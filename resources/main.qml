@@ -8,7 +8,6 @@ Window {
     title: "POKER C++ edition"
     visible: true
     visibility: Window.FullScreen
-    //visibility: Window.Maximized
 
     Component.onCompleted: {
         // Check if the "settingsManager" (exposed from C++) says we've seen it
@@ -16,17 +15,6 @@ Window {
             tutorialOverlay.open()
         }
     }
-
-    // --- F11 FULLSCREEN TOGGLE ---
-    //Shortcut {
-    //    sequence: "F11"
-    //    onActivated: {
-    //        if (root.visibility === Window.FullScreen)
-    //            root.visibility = Window.Windowed
-    //        else
-    //            root.visibility = Window.FullScreen
-    //    }
-    //}
 
     // StackView manages navigation between pages (push/pop)
     StackView {
@@ -39,7 +27,6 @@ Window {
     TutorialPopup {
         id: tutorialOverlay
 
-        // 2. When finished, save the setting so it never shows again
         onFinished: {
             AppSettings.setHasSeenTutorial(true)
         }

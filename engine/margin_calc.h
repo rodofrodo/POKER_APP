@@ -8,6 +8,11 @@
 
 namespace MARGIN
 {
+	/*
+		so if there are n clients, each client gets assigned
+		their own index in BI, which tells them which
+		margins to use from the top, bottom, left, right
+	*/
 	inline std::vector<std::vector<int>> bi_list = {
 		{0, 2, 8}, // 3
 		{0, 2, 5, 8}, // 4

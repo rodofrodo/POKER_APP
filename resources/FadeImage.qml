@@ -2,12 +2,11 @@
 
 Item {
     id: root
-    // Set default sizes, can be overridden when used
+    // Default sizes, can be overridden when used
     width: 280
     height: 73
 
-    // --- Public Properties (Mimicking standard Image) ---
-    // This is the property your backend will update
+    // --- Public Properties ---
     property string source: ""
     property int fillMode: Image.PreserveAspectFit
     property int duration: 300 // How fast the fade is (ms)
@@ -35,9 +34,7 @@ Item {
         id: imgA
         anchors.fill: parent
         fillMode: root.fillMode
-        // Initialize with the starting source
         source: root.source
-        // Opacity is controlled by states below
     }
 
     Image {
@@ -62,10 +59,10 @@ Item {
     ]
 
     transitions: Transition {
-        // Run these animations in parallel for a smooth crossfade
+        // Runing these animations in parallel for a smooth crossfade
         ParallelAnimation {
             NumberAnimation {
-                // Animate whoever is becoming visible
+                // Animating whoever is becoming visible
                 targets: [imgA, imgB]
                 properties: "opacity"
                 duration: root.duration

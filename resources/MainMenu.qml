@@ -28,7 +28,7 @@ Page {
             }
 
             Text {
-                text: "Version 1.0.1 HOTFIX — January 2026"
+                text: "Version 1.0.1 HOTFIX — January 2026" // hotfix
                 color: "white"
                 font.pixelSize: 14
                 opacity: 0.5

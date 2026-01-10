@@ -27,7 +27,7 @@ extern std::vector<QString> globalWinningMsg;
 extern QString globalWinningType;
 
 // -- default winner --
-// i.e. the one who won because other have folded
+// i.e. the one who won because others have folded
 extern QString globalDefaultWinner;
 
 // side pots

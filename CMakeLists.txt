@@ -9,7 +9,6 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(POKER_APP LANGUAGES CXX) # Target name POKER_APP is defined here
-# ... other CMAKE set() commands
 
 # Find Qt6 Packages
 find_package(Qt6 REQUIRED COMPONENTS Quick Network)
@@ -18,8 +17,6 @@ if(MSVC)
     add_compile_options(/utf-8)
 endif()
 
-# 1. Define the executable target FIRST.
-# TODO: add WIN32 after POKER_APP to hide console on Windows
 qt_add_executable(POKER_APP WIN32
     main.cpp
     backend.h
@@ -31,11 +28,9 @@ qt_add_executable(POKER_APP WIN32
     SettingsManager.h
     SettingsManager.cpp
     engine/margin_calc.h
-    # --- ADD THIS LINE ---
     resources.rc
 )
 
-# 2. Then, reference the target when creating the QML module.
 qt_add_qml_module(POKER_APP # <-- This target reference is now known
     URI PokerApp
     VERSION 1.0
@@ -336,7 +331,6 @@ qt_add_qml_module(POKER_APP # <-- This target reference is now known
         resources/images/tutorial/cyan_polygon_right_arrow_48.svg
 )
 
-# 3. Link libraries (using the known target name).
 target_link_libraries(POKER_APP PRIVATE 
     Qt6::Quick
     Qt6::Network

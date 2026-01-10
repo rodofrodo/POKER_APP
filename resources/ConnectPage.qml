@@ -9,17 +9,14 @@ Page {
         color: "#000000"
     }
 
-    // 1. Use a Row to put items next to each other
     Row {
         id: headerRow
         
-        // 2. Position the entire Row on the Left + Top Margin
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.topMargin: 42   // Adjust this for more/less top space
-        anchors.leftMargin: 25  // Adjust this for more/less left space
+        anchors.topMargin: 42
+        anchors.leftMargin: 25
         
-        // 3. Add spacing between the arrow and the logo
         spacing: 28
 
         // --- ITEM 1: Back Arrow ---
@@ -32,8 +29,6 @@ Page {
             height: 32
             fillMode: Image.PreserveAspectFit 
             
-            // REMOVED: anchors.horizontalCenter (Row handles position now)
-
             MouseArea {
                 id: backMouseArea
                 anchors.fill: parent
@@ -53,7 +48,6 @@ Page {
             height: 37
             fillMode: Image.PreserveAspectFit 
             
-            // Optional: Align the logo vertically with the arrow
             anchors.verticalCenter: parent.verticalCenter 
         }
     }
@@ -63,6 +57,7 @@ Page {
         anchors.centerIn: parent
         spacing: 40
 
+        // text
         Column {
             id: textColumn
             spacing: 5
@@ -87,6 +82,7 @@ Page {
             }
         }
 
+        // input
         Column {
             id: inputColumn
             spacing: 20
@@ -129,6 +125,7 @@ Page {
             }
         }
 
+        // button
         Column {
             id: connectColumn
             anchors.horizontalCenter: parent.horizontalCenter

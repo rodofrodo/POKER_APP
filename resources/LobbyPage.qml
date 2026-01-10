@@ -12,17 +12,14 @@ Page {
         color: "#000000"
     }
 
-    // 1. Use a Row to put items next to each other
     Row {
         id: headerRow
         
-        // 2. Position the entire Row on the Left + Top Margin
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.topMargin: 42   // Adjust this for more/less top space
-        anchors.leftMargin: 25  // Adjust this for more/less left space
+        anchors.topMargin: 42
+        anchors.leftMargin: 25
         
-        // 3. Add spacing between the arrow and the logo
         spacing: 28
 
         // --- ITEM 1: Back Arrow ---
@@ -40,7 +37,6 @@ Page {
             height: 37
             fillMode: Image.PreserveAspectFit 
             
-            // Optional: Align the logo vertically with the arrow
             anchors.verticalCenter: parent.verticalCenter 
         }
     }
@@ -48,13 +44,11 @@ Page {
     Row {
         id: accountRow
         
-        // 2. Position the entire Row on the Left + Top Margin
         anchors.top: parent.top
         anchors.right: parent.right
-        anchors.topMargin: 42   // Adjust this for more/less top space
-        anchors.rightMargin: 85  // Adjust this for more/less left space
+        anchors.topMargin: 42 
+        anchors.rightMargin: 85  
         
-        // 3. Add spacing between the arrow and the logo
         spacing: 15
 
         Column {
@@ -84,7 +78,6 @@ Page {
             height: 42
             fillMode: Image.PreserveAspectFit 
             
-            // Optional: Align the logo vertically with the arrow
             anchors.verticalCenter: parent.verticalCenter 
         }
     }
@@ -143,7 +136,6 @@ Page {
         height: 35
         fillMode: Image.PreserveAspectFit 
         
-        // Optional: Align the logo vertically with the arrow
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 55
@@ -178,18 +170,14 @@ Page {
         }
         
         Repeater {
-            // This connects to the C++ list we will create below
             model: backend.playerList 
 
             Rectangle {
-                // A. Give the item a size so Flow knows how to arrange it
                 width: 250 
                 height: 65
             
-                // B. Visual styling (looks like a player tag)
                 color: "black"
 
-                // C. NOW you can use anchors to center the text INSIDE this rectangle
                 Text {
                     anchors.centerIn: parent 
                     text: modelData 

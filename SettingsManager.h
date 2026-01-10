@@ -43,6 +43,7 @@ signals:
 	void hasSeenTutorialChanged();
 
 private:
+	// member variables
 	QString m_filePath;
 	QString m_bgImg;
 	QString m_cardBack;

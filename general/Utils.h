@@ -10,12 +10,24 @@
 
 namespace utils
 {
+    /// <summary>
+    /// Checks whether the given string 'str' starts with the prefix 'prefix'.
+    /// </summary>
+    /// <param name="str">Input string in which the prefix is checked.</param>
+    /// <param name="prefix">Prefix to compare with the beginning of 'str'.</param>
+    /// <returns>True if 'str' starts with 'prefix', otherwise false.</returns>
     inline bool startsWith(const std::string& str, const std::string& prefix)
     {
         // check if 'str' starts with 'prefix'
         return str.size() >= prefix.size() && str.compare(0, prefix.size(), prefix) == 0;
     }
 
+    /// <summary>
+    /// Splits the string 'str' into tokens using the separator 'delimiter'.
+    /// </summary>
+    /// <param name="str">Input string</param>
+    /// <param name="delimiter">The character used as a separator</param>
+    /// <returns>A vector of QStrings</returns>
     inline std::vector<QString> split(const std::string& str, char delimiter)
     {
         std::vector<QString> tokens;
@@ -25,6 +37,11 @@ namespace utils
         return tokens;
     }
 
+    /// <summary>
+	/// Converts a string representation of a card into a GameCard object.
+    /// </summary>
+    /// <param name="cardStr">A string of a card</param>
+    /// <returns>The GameCard object</returns>
     inline GameCard parseCard(const std::string& cardStr)
     {
         // Expected format: "Suit%Rank", e.g., "HEARTS%ACE"
@@ -56,6 +73,11 @@ namespace utils
         return GameCard(suit, rank);
     }
 
+    /// <summary>
+	/// Converts a PokerHand enum value to its corresponding string representation.
+    /// </summary>
+    /// <param name="pk">A PokerHand value</param>
+    /// <returns>The poker hand string</returns>
     inline std::string getHandName(PokerHand pk)
     {
         switch (pk)
@@ -74,6 +96,11 @@ namespace utils
         }
     }
 
+    /// <summary>
+	/// Converts a BettingRound enum value to its corresponding string representation.
+    /// </summary>
+    /// <param name="br">A BettingRound value</param>
+    /// <returns>The betting round string</returns>
     inline std::string getBettingRound(BettingRound br)
     {
         switch (br)
@@ -86,6 +113,11 @@ namespace utils
         }
     }
 
+    /// <summary>
+	/// Converts an integer to its Roman numeral representation.
+    /// </summary>
+    /// <param name="number">A number</param>
+    /// <returns>A string with a Roman numeral</returns>
     inline std::string getRomanNumeral(int number)
     {
         std::string roman;

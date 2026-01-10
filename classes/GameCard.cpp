@@ -7,6 +7,8 @@ GameCard::GameCard(Suit suit, Rank rank)
 	this->rank = rank;
 }
 
+// maybe it's not needed after all
+// but if I remove it, it gives me an error
 GameCard::GameCard() {}
 
 bool GameCard::operator==(const GameCard& other) const
@@ -29,7 +31,7 @@ std::string GameCard::getRankString(Rank rank) const
 	else if (rank == Rank::QUEEN) return "Q";
 	else if (rank == Rank::KING) return "K";
 	else if (rank == Rank::ACE) return "A";
-	else return "bla bla bla";
+	return "bla bla bla";
 }
 
 std::string GameCard::toString() const

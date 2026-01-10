@@ -19,10 +19,14 @@ public:
 	int loans;
 	bool hasWon;
 	QString winningHandString;
-	// -- constructor --
+
+	/// <summary>
+	/// The casual constructor initializes a Player with default values:
+	/// </summary>
 	Player() : name(""), balance(0), isDealer(false), bettingState(BettingState::NORMAL),
 		leftCard(Suit::CLUBS, Rank::TWO), rightCard(Suit::CLUBS, Rank::TWO),
 		hasFolded(false), loans(0), hasWon(false), winningHandString("") {}
-	// ---
+
+	// thought it was useful
 	bool operator==(const Player& other) const;
 };

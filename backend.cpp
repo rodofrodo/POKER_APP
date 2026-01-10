@@ -31,9 +31,6 @@ Backend::Backend(QObject* parent) : QObject(parent), m_socket(new QTcpSocket(thi
     m_raiseVal = 500;
 
     gotPlayers = false;
-    gotGameInfo = false;
-    gotCommunityCards = false;
-    gotPlayerCards = false;
 
     // Listen for socket state changes
     connect(m_socket, &QTcpSocket::connected, this, [this]() {
@@ -67,7 +64,7 @@ Backend::Backend(QObject* parent) : QObject(parent), m_socket(new QTcpSocket(thi
             errorMsg = "Network Error";
             break;
         default:
-            // Fallback for rare errors: try the system string, or just say "Unknown"
+            // Fallback for rare error
             errorMsg = "Unknown Socket Error (" + QString::number(socketError) + ")";
             break;
         }
@@ -77,6 +74,7 @@ Backend::Backend(QObject* parent) : QObject(parent), m_socket(new QTcpSocket(thi
         });
 }
 
+// ---- Getters ----
 QString Backend::statusMessage() const { return m_status; }
 QString Backend::getIpAddress() const { return m_ipAddress; }
 QString Backend::getPort() const { return m_port; }
@@ -209,7 +207,9 @@ QString Backend::getRaiseUpText() const
 		return "All-in";
     return "$" + QString::number(m_raiseVal / 100.0, 'f', 2);
 }
+// ---
 
+// ---- Setters and message handling ----
 void Backend::setStatus(const QString& msg)
 {
     if (m_status != msg)
@@ -242,6 +242,7 @@ void Backend::sendMessage(const QString& msg)
     }
 }
 
+// receives data from server
 void Backend::onReadyRead()
 {
     QByteArray data = m_socket->readAll();
@@ -255,6 +256,12 @@ void Backend::onReadyRead()
     }
 }
 
+/*
+    So this is where the magic happens.
+	Each message from the server starts with a specific prefix,
+    which indicates what kind of data follows.
+	The function checks the prefix and processes the message accordingly.
+*/
 void Backend::processBuffer(const QString& msg)
 {
     if (msg.startsWith(NAME_REGISTER_PREFIX))
@@ -322,7 +329,7 @@ void Backend::processBuffer(const QString& msg)
             p.loans = details[2].toInt();
             p.bettingState = BettingState::NORMAL;
             p.isDealer = false;
-            p.leftCard = GameCard(Suit::CLUBS, Rank::TWO);
+			p.leftCard = GameCard(Suit::CLUBS, Rank::TWO); // placeholder
             p.rightCard = GameCard(Suit::CLUBS, Rank::TWO);
             p.currentBet = { VAL::CLEAR, false };
             p.hasFolded = false;
@@ -334,6 +341,7 @@ void Backend::processBuffer(const QString& msg)
                 clientIndex = index;
             index++;
         }
+		// margin init
         MARGIN::init_and_rotate(playerNames.size(), clientIndex);
     }
     else if (msg.startsWith(BETTING_ORDER_MSG_PREFIX))
@@ -371,7 +379,6 @@ void Backend::processBuffer(const QString& msg)
         currentBettingRound = BettingRound::PRE_FLOP;
         nextPlayer();
         gotPlayers = true;
-        gotGameInfo = true;
     }
     else if (msg.startsWith(COMMUNITY_CARDS_MSG_PREFIX))
     {
@@ -385,7 +392,6 @@ void Backend::processBuffer(const QString& msg)
             GameCard card = utils::parseCard(cardStr.toStdString());
             communityCards.push_back(card);
         }
-        gotCommunityCards = true;
     }
     else if (msg.startsWith(PLAYER_CARDS_MSG_PREFIX))
     {
@@ -393,6 +399,7 @@ void Backend::processBuffer(const QString& msg)
         if (parts.size() < 2) return;
         QString cardsData = parts[1];
         QStringList cardStrs = cardsData.split("+");
+		// assigning cards to players
         for (const QString& cardStr : cardStrs)
         {
             QStringList mini_info = cardStr.split("#");
@@ -402,8 +409,8 @@ void Backend::processBuffer(const QString& msg)
             playerMap[name].leftCard = utils::parseCard(left_card.toStdString());
             playerMap[name].rightCard = utils::parseCard(right_card.toStdString());
         }
-        gotPlayerCards = true;
-        // ---
+		// Even though the server also inits the blinds,
+		// we do it here to keep the client state consistent.
         for (auto& [k, p] : playerMap)
         {
             if (p.bettingState == BettingState::SMALL_BLIND)
@@ -421,6 +428,7 @@ void Backend::processBuffer(const QString& msg)
                 currentGameState = GameState::BETTING_ROUND;
             }
         }
+		// remember 500 = $5.00, and 1000 = $10.00
     }
     else if (msg.startsWith(WINNER_HAND_MSG_PREFIX))
     {
@@ -430,6 +438,7 @@ void Backend::processBuffer(const QString& msg)
         QStringList parts = msg.split("&");
         for (const QString& p : parts)
         {
+			// continue used here because of for each loop iteration
             if (p == WINNER_HAND_MSG_PREFIX) continue;
             if (p == "normal" || p == "sidepot")
             {
@@ -450,6 +459,7 @@ void Backend::processBuffer(const QString& msg)
             }
 			playerMap[winnerName].hasWon = true;
 			playerMap[winnerName].winningHandString = QString::fromStdString(utils::getHandName(winningHand)).toUpper();
+            // this string is only for tests
             std::string message = std::format("The winner is: {}\nWon with: {}",
                 winnerName.toStdString(), utils::getHandName(winningHand));
             globalWinningCards.push_back(winningCards);
@@ -459,6 +469,7 @@ void Backend::processBuffer(const QString& msg)
     }
     else if (msg.startsWith(DEFAULT_WINNER_MSG_PREFIX))
     {
+		// default winner, i.e. everyone else has folded
         auto parts = msg.split("&");
         if (parts.size() < 2) return;
         globalDefaultWinner = parts[1];
@@ -468,6 +479,8 @@ void Backend::processBuffer(const QString& msg)
     }
     else if (msg.startsWith(SIDE_POTS_MSG_PREFIX))
     {
+		// side pots calculation is part of server logic
+		// so we only receive the info here
         sidePots.clear();
         m_sidePots.clear();
         auto parts = msg.split("&");
@@ -493,6 +506,7 @@ void Backend::processBuffer(const QString& msg)
         {
             if (p.name == info[0])
             {
+				// handling the situation if bet = 0 (e.g. check)
                 int currBet = info[1].toInt();
                 int mode = info[2].toInt();
                 int prevBet = (p.currentBet.value == VAL::CLEAR) ? VAL::EMPTY : p.currentBet.value;
@@ -502,14 +516,14 @@ void Backend::processBuffer(const QString& msg)
                     topbet = p.currentBet;
                 // ---
                 int calc;
-                if (mode == 1)
+                if (mode == 1) // check, call
                     calc = (currBet - prevBet);
-                else if (mode == 2)
+                else if (mode == 2) // bet, raise
                 {
                     calc = (currBet - prevBet);
                     minimalRaiseAmount = (currBet - prevTopbet);
                 }
-                else if (mode == 3)
+                else if (mode == 3) // fold
                 {
                     p.hasFolded = true;
                     break;
@@ -541,13 +555,14 @@ void Backend::processBuffer(const QString& msg)
                 if (!playerMap[v].hasFolded && !playerMap[v].currentBet.isAllIn)
                     hasNotGoneAllIn++;
             }
+            // default winner
             if (inGame < 2)
             {
                 currentGameState = GameState::GAME_OVER;
                 sendMessage(QString::fromStdString("get_winner&game_over&" + std::to_string(pot)));
                 return;
             }
-            // ---
+            // showdown
             currentBettingRound = (BettingRound)((int)currentBettingRound + 1);
             if ((int)currentBettingRound > 3 || hasNotGoneAllIn < 2)
             {
@@ -560,15 +575,14 @@ void Backend::processBuffer(const QString& msg)
             {
                 QString name = playerNames[i];
 
-                // 2. Safety: Ensure this name actually exists in the map
+                // Ensuring this name actually exists in the map
                 if (playerMap.find(name) == playerMap.end()) continue;
 
-                // 3. Logic
                 if (playerMap[name].bettingState == BettingState::SMALL_BLIND)
                 {
                     currentPlayer = i;
 
-                    // Check if we need to skip this player (Folded or All-In)
+                    // Checking if we need to skip this player (Folded or All-In)
                     if (playerMap[name].hasFolded ||
                         playerMap[name].currentBet.isAllIn)
                     {
@@ -576,16 +590,6 @@ void Backend::processBuffer(const QString& msg)
                     }
                     break; // Found the small blind, stop looking
                 }
-                /*if (playerMap[playerNames[i]].bettingState == BettingState::SMALL_BLIND)
-                {
-                    currentPlayer = i;
-                    if (playerMap[playerNames[i]].hasFolded ||
-                        playerMap[playerNames[i]].currentBet.isAllIn)
-                    {
-                        nextPlayer();
-                        break;
-                    }
-                }*/
             }
             for (auto& [key, p] : playerMap)
             {
@@ -596,6 +600,8 @@ void Backend::processBuffer(const QString& msg)
     }
     else if (msg.startsWith(BANKRUPTS_MSG_PREFIX))
     {
+		// so this is when players go bankrupt and get loans
+		// because it'd be cringy if they just got eliminated
         auto parts = msg.split("&");
         if (parts.size() < 2) return;
         auto info = parts[1].split("#");
@@ -625,6 +631,8 @@ void Backend::nextPlayer()
     int attempts = 0;
     int maxAttempts = playerNames.size();
 
+	// this loop will try to find the next active player
+	// (i.e., not folded and not all-in)
     do
     {
         currentPlayer = (currentPlayer + 1) % playerNames.size();
@@ -637,10 +645,6 @@ void Backend::nextPlayer()
     } while (attempts < maxAttempts);
 
     qDebug() << "WARNING: No active players found (everyone folded or all-in).";
-    /*currentPlayer = (currentPlayer + 1) % playerMap.size();
-    if (playerMap[playerNames[currentPlayer]].hasFolded ||
-        playerMap[playerNames[currentPlayer]].currentBet.isAllIn)
-        nextPlayer();*/
 }
 
 void Backend::connectToServer(const QString& ip, const QString& port)
@@ -681,6 +685,7 @@ void Backend::updateName(const QString& name)
 
 void Backend::_match_bet()
 {
+	// check or call
     if (m_clientName == playerNames[currentPlayer])
     {
         int highbet = (topbet.value == VAL::CLEAR)
@@ -704,6 +709,7 @@ void Backend::_match_bet()
 
 void Backend::_change_bet_open()
 {
+    // btw it can be opened if the text is not '-'
     if (m_clientName == playerNames[currentPlayer])
     {
         TUPLE::MinMax res = prompt::getDifferentBetOptions(topbet, playerMap[playerNames[currentPlayer]]);
@@ -714,6 +720,7 @@ void Backend::_change_bet_open()
 
 void Backend::_change_bet_confirm()
 {
+	// bet or raise
     if (m_clientName == playerNames[currentPlayer])
     {
         TUPLE::MinMax res = prompt::getDifferentBetOptions(topbet, playerMap[playerNames[currentPlayer]]);
@@ -733,7 +740,7 @@ void Backend::_fold()
 {
     if (m_clientName == playerNames[currentPlayer])
         sendMessage(QString::fromStdString(std::format("action&{}={}={}",
-            m_clientName.toStdString(), 3, -123456)));
+            m_clientName.toStdString(), 3, -123456))); // idk 67 is funny, but -123456 was more visible in console
 }
 
 void Backend::increaseBet()
@@ -743,6 +750,7 @@ void Backend::increaseBet()
         TUPLE::MinMax res = prompt::getDifferentBetOptions(topbet, playerMap[playerNames[currentPlayer]]);
         if (m_raiseVal < res.max)
         {
+            // I think increasing by $5.00 is optimal
             m_raiseVal += 500;
             emit raiseValueChanged();
         }
@@ -756,12 +764,15 @@ void Backend::decreaseBet()
         TUPLE::MinMax res = prompt::getDifferentBetOptions(topbet, playerMap[playerNames[currentPlayer]]);
         if (m_raiseVal > res.min)
         {
+            // As we raise with each click by $5.00,
+            // we also decrease by $5.00
             m_raiseVal -= 500;
             emit raiseValueChanged();
         }
     }
 }
 
+// --- Design ---
 QString Backend::getPlayerName(int index) { return m_playerList[index]; }
 
 QString Backend::getBettingState(int index)
@@ -911,6 +922,7 @@ QString Backend::getAvailablePots(int index)
 		pots.chop(1);
 	return pots;
 }
+// ---
 
 // margins
 // ----------------

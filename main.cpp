@@ -1,3 +1,6 @@
+// POKER C++ edition
+// GitHub: rodofrodo
+
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>

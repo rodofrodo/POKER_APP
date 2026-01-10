@@ -1,6 +1,4 @@
 ﻿import QtQuick
-import QtQuick.Controls
-import QtQuick.Effects
 
 Item {
     id: root
@@ -15,30 +13,25 @@ Item {
     opacity: 0
     scale: 1.05
 
-    // A dark semi-transparent overlay to darken the blurred background
     Rectangle {
         anchors.fill: parent
-        //color: "#0d1017" // 50% transparent black
         color: "#000010"
     }
     
     // Consume mouse clicks so they don't hit the game behind the popup
     MouseArea { anchors.fill: parent; hoverEnabled: true; acceptedButtons: Qt.AllButtons }
 
-
-    // 2. THE CENTERED DIALOG BOX
     Rectangle {
         id: dialogBox
         width: 1600
         height: 900
         anchors.centerIn: parent
-        //color: "#0d1017" // Light gray background for the box
         color: "#000010"
-        clip: true // Ensure images don't bleed out of rounded corners
+        clip: true
 
         // Internal State
         property int currentIndex: 0
-        // Replace these paths with your actual image resource paths
+
         readonly property var tutorialImages: [
             "qrc:/PokerApp/resources/images/tutorial/tut1.png",
             "qrc:/PokerApp/resources/images/tutorial/tut2.png",
@@ -59,11 +52,9 @@ Item {
             "qrc:/PokerApp/resources/images/tutorial/tut17.png"
         ]
 
-        // THE GALLERY IMAGE
         Image {
             id: galleryImage
             anchors.centerIn: parent
-            // Leave space for arrows and text
             width: 1064
             height: 715
             fillMode: Image.PreserveAspectFit
@@ -165,7 +156,7 @@ Item {
             NumberAnimation { target: root; property: "opacity"; to: 0.0; duration: 400; easing.type: Easing.InQuad }
             NumberAnimation { target: root; property: "scale"; to: 1.05; duration: 400; easing.type: Easing.InQuad }
         }
-        // CRITICAL: Once animation is done, turn off visibility so mouse clicks pass through
+        // Once animation is done, we turn off visibility so mouse clicks pass through
         ScriptAction { script: root.visible = false }
     }
 }

@@ -4,6 +4,7 @@ import QtQuick.Controls
 Page {
     title: "GamePage"
 
+    // clicking with keyboard
     Shortcut {
         sequence: "1"
         onActivated: {
@@ -26,6 +27,7 @@ Page {
             backend._fold();
         }
     }
+    // ---
 
     background: Image {
         source: "qrc:/PokerApp/resources/images/boards/board_" + AppSettings.bgImg + ".svg"
@@ -51,6 +53,7 @@ Page {
         source: "qrc:/PokerApp/fonts/georgiaz.ttf" 
     }
    
+    // the repeater for player rounded rectangles
     Repeater {
         model: backend.lobbySize
         
@@ -74,11 +77,11 @@ Page {
             anchors.rightMargin: (backend.uiTrigger, backend.canAlignRight(index) ? backend.getRightMargin(index) : 0)
 
             Column {
-                //spacing: 3
                 anchors.left: parent.left
                 anchors.leftMargin: 25 
                 anchors.verticalCenter: parent.verticalCenter
 
+                // top
                 Row {
                     spacing: 8
 
@@ -99,6 +102,7 @@ Page {
                     }
                 }
 
+                // bottom
                 Row {
                     spacing: 6
 
@@ -121,6 +125,7 @@ Page {
                 }
             }
 
+            // bet value or cards are here
             Row {
                 anchors.right: parent.right
                 anchors.rightMargin: 25
@@ -156,6 +161,7 @@ Page {
         }
     }
 
+    // server info
     Column {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
@@ -177,23 +183,9 @@ Page {
             color: "#ffffff"
             font.bold: true
         }
-        /*
-        Text {
-            text: "SETTINGS"
-            font.pixelSize: 16
-            horizontalAlignment: Text.AlignHCenter
-            color: "#ffffff"
-
-            MouseArea {
-                anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
-                onClicked: {
-                    stackView.push("OptionsPage.qml")
-                }
-            }
-        }*/
     }
 
+    // pot, side pots, current bet
     Column {
         anchors.horizontalCenter: communityCards.horizontalCenter
         anchors.bottom: communityCards.top
@@ -273,6 +265,7 @@ Page {
         }
     }
 
+    // community cards
     Row {
         anchors.centerIn: parent
         anchors.verticalCenterOffset: -50
@@ -310,6 +303,7 @@ Page {
         }
     }
 
+    // info regarding the betting round
     Text {
         id: bettingRoundText
 
@@ -327,6 +321,7 @@ Page {
         color: "#00E3FF"
     }
 
+    // your turn text
     Text {
         id: yourTurnText
 
@@ -342,6 +337,7 @@ Page {
         color: AppSettings.color
     }
 
+    // player cards
     Row {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
@@ -361,17 +357,18 @@ Page {
         }
     }
 
+    // options: check, call, bet, raise, fold, all-in
     Column {
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.bottomMargin: 60
-        anchors.rightMargin: 40 // This will work now!
+        anchors.rightMargin: 40
         spacing: 10
         id: optionsColumn
 
         // --- BUTTON 1 ---
+        // check, call, all-in
         Item {
-            // Container determines size based on the Row content
             width: row1.width 
             height: 32
 
@@ -395,7 +392,6 @@ Page {
                 }
             }
 
-            // MouseArea sits ON TOP of the Row, filling the Container
             MouseArea {
                 id: btn1ma
                 hoverEnabled: true
@@ -406,6 +402,7 @@ Page {
         }
 
         // --- BUTTON 2 ---
+        // bet, raise
         Item {
             width: row2.width
             height: 32
@@ -447,6 +444,7 @@ Page {
         }
 
         // --- BUTTON 3 ---
+        // fold
         Item {
             width: row3.width
             height: 32
@@ -481,11 +479,13 @@ Page {
         }
     }
 
+    // the "dialog box" I'd call it
+    // but essentially there are arrows for raising
     Row {
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         anchors.bottomMargin: 60
-        anchors.rightMargin: 50 // This will work now!
+        anchors.rightMargin: 50
         spacing: 50
         id: raiseRow
         visible: false
@@ -529,6 +529,7 @@ Page {
             }
         }
 
+        // confirm, cancel
         Column {
             anchors.verticalCenter: parent.verticalCenter
             spacing: 20
@@ -578,6 +579,9 @@ Page {
         }
     }
 
+    // here happens another magic:
+    // cards are animated here
+    // and options for a player change state here as well
     Connections {
         target: backend
 

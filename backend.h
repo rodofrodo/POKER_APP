@@ -12,7 +12,8 @@
 class Backend : public QObject
 {
 Q_OBJECT
-// A property to show connection status in the UI
+
+#pragma region QML Properties
 Q_PROPERTY(QString statusMessage READ statusMessage NOTIFY statusChanged)
 Q_PROPERTY(QString ipAddress READ getIpAddress NOTIFY connectionDetailsChanged)
 Q_PROPERTY(QString port READ getPort NOTIFY connectionDetailsChanged)
@@ -39,14 +40,21 @@ Q_PROPERTY(QString raiseVal READ getRaiseVal NOTIFY raiseValueChanged)
 Q_PROPERTY(double raiseUpOpacity READ getRaiseUpOpacity NOTIFY raiseValueChanged)
 Q_PROPERTY(double raiseDownOpacity READ getRaiseDownOpacity NOTIFY raiseValueChanged)
 Q_PROPERTY(QString raiseUpText READ getRaiseUpText NOTIFY raiseValueChanged)
+#pragma endregion
 
 public:
+    /// <summary>
+	/// The constructor for the Backend class.
+	/// It handles communication between the UI and the poker game server.
+    /// </summary>
     explicit Backend(QObject* parent = nullptr);
 
-    QString statusMessage() const;
+#pragma region Getters
+    // ----
+	QString statusMessage() const; // to indicate connection status
     QString getIpAddress() const;
     QString getPort() const;
-	QString nameProblem() const;
+	QString nameProblem() const; // if somebody else has the same name
     QString getName() const;
     QString getLobbySize() const;
     QStringList getPlayerList() const;
@@ -69,15 +77,20 @@ public:
 	double getRaiseUpOpacity() const;
     double getRaiseDownOpacity() const;
     QString getRaiseUpText() const;
+    // ---
+#pragma endregion
 
-    // Q_INVOKABLE allows QML to call this C++ function
+#pragma region Methods available to QML
     Q_INVOKABLE void connectToServer(const QString& ip, const QString& port);
+	// so this can be called from QML
+	// idk why I made a separate public version
     Q_INVOKABLE void sendMessage_public(const QString& msg);
     Q_INVOKABLE void updateName(const QString& name);
 
     // moves
     Q_INVOKABLE void _match_bet(); // check or call
     Q_INVOKABLE void _change_bet_open(); // bet or raise
+	// this confirms the bet or raise after opening it
     Q_INVOKABLE void _change_bet_confirm();
     Q_INVOKABLE void _fold(); // fold
     Q_INVOKABLE void increaseBet();
@@ -113,11 +126,14 @@ public:
     // centers
 	Q_INVOKABLE bool canAlignHCenter(int index);
 	Q_INVOKABLE bool canAlignVCenter(int index);
+#pragma endregion
 
+	// public members
     QString m_ipAddress;
     QString m_port;
     QString m_clientName;
 
+#pragma region Signals (I'd call it triggerers)
 signals:
     void statusChanged();
     void connectedToServer();
@@ -131,8 +147,10 @@ signals:
     void updatedGamePage();
     void raiseValueChanged();
 	void connectionError(const QString& errorMsg);
+#pragma endregion
 
 private:
+	// private members
     QTcpSocket* m_socket;
     QString m_status;
 	QString m_nameProblem;
@@ -143,15 +161,24 @@ private:
     int m_raiseVal;
 	QStringList m_sidePots;
 
+    /*
+	    so those booleans were originally to make sure that the update only happens
+	    after all parts of the game state have been received
+	    however, due to the asynchronous nature of Qt signals and slots,
+	    this approach was unreliable and has been deprecated, because
+		the bytes are read until '\n' is found, and each complete message is processed immediately
+    */
     bool gotPlayers;
-    bool gotGameInfo;
-    bool gotCommunityCards;
-    bool gotPlayerCards;
+    //bool gotGameInfo;
+    //bool gotCommunityCards;
+    //bool gotPlayerCards;
 
     void setStatus(const QString& msg);
 	void setNameProblem(const QString& msg);
 	void sendMessage(const QString& msg);
+    // receives data from server
 	void onReadyRead();
+	// processes a single complete message from the buffer
     void processBuffer(const QString& msg);
     void _update();
     void nextPlayer();

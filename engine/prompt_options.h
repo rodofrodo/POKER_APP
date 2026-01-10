@@ -11,6 +11,12 @@
 
 namespace prompt
 {
+    /// <summary>
+	/// It served a different purpose before, now it just returns min and max raise amounts
+    /// </summary>
+    /// <param name="highestBet">The highest bet</param>
+    /// <param name="sender">The player's name</param>
+    /// <returns>Minimum and maximum value for raise</returns>
     inline TUPLE::MinMax getDifferentBetOptions(TUPLE::Bet highestBet, Player sender)
     {
         int highbet = (highestBet.value == VAL::CLEAR) ? VAL::EMPTY : highestBet.value;
@@ -22,6 +28,12 @@ namespace prompt
         return { val_min, val_max };
     }
 
+    /// <summary>
+	/// Gives you the available options for the player based on the highest bet and their current bet
+    /// </summary>
+    /// <param name="highestBet">The highest bet</param>
+    /// <param name="sender">The player's name</param>
+    /// <returns>A list of available options</returns>
     inline QStringList getAvailableOptions(TUPLE::Bet highestBet, Player sender)
     {
         int highbet = (highestBet.value == VAL::CLEAR) ? VAL::EMPTY : highestBet.value;

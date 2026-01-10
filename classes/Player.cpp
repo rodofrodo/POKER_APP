@@ -3,5 +3,6 @@
 
 bool Player::operator==(const Player& other) const
 {
+	// lmao
 	return name == other.name;
 }

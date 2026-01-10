@@ -7,7 +7,7 @@
 
 SettingsManager::SettingsManager(QObject* parent) : QObject(parent)
 {
-    // e.g., C:/Users/You/AppData/Local/PokerApp/settings.json
+    // e.g., C:/Users/You/AppData/Local/POKER_APP/settings.json
     QString folderPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
 
     QDir dir(folderPath);
